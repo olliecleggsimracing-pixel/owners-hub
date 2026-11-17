@@ -1,5 +1,2 @@
-First full release of The Owners Hub desktop app.
-
-- Garage, service schedule, history, reminders, build list and key dates for all your cars
-- Windows notifications for anything overdue or due soon
-- Automatic updates: when a new version is ready, press Update
+- Fixed: you can now correct a mileage that was typed wrong. Tap "Log miles", enter the right number, and confirm, or use "Entered the wrong mileage? Correct it".
+- Wrong readings are removed from your mileage history so due-date estimates stay accurate.

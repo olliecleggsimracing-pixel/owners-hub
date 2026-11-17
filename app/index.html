@@ -1164,13 +1164,35 @@ function svcSheet(c,sv){
   <div class="card note" style="margin:0">${sv.includes.map(x=>'• '+esc(x)).join('<br>')||'No checklist.'}</div>
   <div class="sh-actions"><button class="btn ghost" data-act="close">Close</button><button class="btn" data-act="log-svc" data-id="${sv.id}">${IC.plus} Log this service</button></div>`);
 }
+function setMileage(c,miles,date,correcting){
+  date=date||todayISO();
+  if(correcting)c.odo=(c.odo||[]).filter(o=>Number(o.miles)<=miles);
+  c.mileage=miles;c.odo=(c.odo||[]).filter(o=>o.date!==date);c.odo.push({date,miles});
+  c.odo.sort((a,b)=>a.date<b.date?-1:1);if(c.odo.length>60)c.odo=c.odo.slice(-60);
+  commit(c);
+}
 function mileageSheet(c){
   formSheet({title:'Update mileage',sub:'Last recorded: '+mi(c.mileage),fields:[{k:'miles',label:'Odometer reading',type:'number',full:1},{k:'date',label:'Date',type:'date',full:1}],values:{miles:'',date:todayISO()},save:'Update',
-    onSave:v=>{if(!has(v.miles))return'Enter the mileage';if(v.miles<c.mileage-5&&!confirmLower){confirmLower=true;return'That\'s lower than before. Tap Update again to confirm'}
-      confirmLower=false;c.mileage=v.miles;c.odo=(c.odo||[]).filter(o=>o.date!==v.date);c.odo.push({date:v.date||todayISO(),miles:v.miles});c.odo.sort((a,b)=>a.date<b.date?-1:1);if(c.odo.length>60)c.odo=c.odo.slice(-60);commit(c);toast('Mileage updated')}});
+    onSave:v=>{if(!has(v.miles))return'Enter the mileage';if(v.miles<0)return'Mileage can\'t be negative';
+      if(v.miles<c.mileage){setTimeout(()=>correctMileageSheet(c,v.miles,v.date),220);return}
+      setMileage(c,v.miles,v.date,false);toast('Mileage updated')}});
+  $('#sf').insertAdjacentHTML('afterend',`<button class="link" data-act="mileage-fix" style="margin-top:14px">Entered the wrong mileage? Correct it</button>`);
   setTimeout(()=>$('#f_miles')?.focus(),250);
 }
-let confirmLower=false;
+function correctMileageSheet(c,miles,date){
+  if(miles==null){
+    formSheet({title:'Correct mileage',sub:'Fix a reading that was typed wrong. Last recorded: '+mi(c.mileage),fields:[{k:'miles',label:'Correct odometer reading',type:'number',full:1}],values:{miles:''},save:'Next',
+      onSave:v=>{if(!has(v.miles)||v.miles<0)return'Enter the correct mileage';setTimeout(()=>correctMileageSheet(c,v.miles,todayISO()),220)}});
+    setTimeout(()=>$('#f_miles')?.focus(),250);return;
+  }
+  const wrong=(c.odo||[]).filter(o=>Number(o.miles)>miles);
+  const logs=c.log.filter(l=>has(l.miles)&&Number(l.miles)>miles);
+  openSheet(`<div class="sh-t">Correct the mileage?</div>
+   <div class="sh-s" style="font-size:14px">This changes ${esc(c.name)} from <b style="color:var(--text)">${mi(c.mileage)}</b> to <b style="color:var(--text)">${mi(miles)}</b>.</div>
+   ${wrong.length?`<div class="card note" style="margin:0 0 8px">${wrong.length} saved reading${wrong.length>1?'s':''} above ${mi(miles)} will be removed as mistakes.</div>`:''}
+   ${logs.length?`<div class="card note" style="margin:0;border-color:rgba(251,191,36,.35)">${logs.length} service history entr${logs.length>1?'ies have':'y has'} a mileage above ${mi(miles)} (${esc(logs.slice(0,3).map(l=>fmtD(l.date)+' · '+mi(l.miles)).join(', '))}). If that's the typo too, fix it in Service → History.</div>`:''}
+   <div class="sh-actions"><button class="btn ghost" data-act="close">Cancel</button><button class="btn" data-act="mileage-correct" data-miles="${miles}" data-date="${esc(date||todayISO())}">Correct to ${mi(miles)}</button></div>`);
+}
 function logSheet(c,entry,preTask,preSvc){
   const isNew=!entry;const svs=(c.mfr&&c.mfr.services)||[];const sv0=preSvc&&svs.find(x=>x.id===preSvc);
   const e=entry||{date:todayISO(),miles:c.mileage,svc:sv0?sv0.id:'',title:sv0?sv0.name:'',taskIds:sv0?[...sv0.itemIds]:preTask?[preTask]:[]};
@@ -1295,6 +1317,8 @@ document.addEventListener('click',e=>{
     case 'log-svc':{const id=d.id;closeSheet();setTimeout(()=>logSheet(c,null,null,id),200);break}
     case 'edit-car':editCarSheet(c);break;
     case 'mileage':mileageSheet(c);break;
+    case 'mileage-fix':closeSheet();setTimeout(()=>correctMileageSheet(c),220);break;
+    case 'mileage-correct':{const m=Number(d.miles);setMileage(c,m,d.date,true);closeSheet();toast('Mileage corrected to '+mi(m));break}
     case 'log':logSheet(c);break;
     case 'log-item':{const id=d.id;closeSheet();setTimeout(()=>logSheet(c,null,id),200);break}
     case 'add-item':editItemSheet(c);break;
