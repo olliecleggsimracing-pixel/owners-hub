@@ -35,9 +35,13 @@ jobs:
           fi
       - name: Point the updater at this repository
         if: steps.ver.outputs.new == 'true'
-        run: npm pkg set "repository=github:${{ github.repository }}"
+        shell: bash
+        run: |
+          npm pkg set "repository=github:${{ github.repository }}"
+          npm pkg set build.publish.provider=github build.publish.releaseType=release
       - if: steps.ver.outputs.new == 'true'
         run: npm install
       - name: Build installer and publish release
         if: steps.ver.outputs.new == 'true'
-        run: npx electron-builder --win nsis --x64 --publish always -c.publish.provider=github -c.publish.releaseType=release
+        shell: bash
+        run: npx electron-builder --win nsis --x64 --publish always
