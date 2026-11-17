@@ -1,11 +1,11 @@
-# Builds the Windows installer and publishes it as a GitHub Release
-# whenever a version tag (e.g. v1.0.1) is pushed. The installed app
-# checks these releases and shows an "Update" button.
+# Builds the Windows installer and publishes it as a GitHub Release whenever
+# the "version" in package.json changes on main. The installed app checks
+# these releases and shows an "Update" button.
 name: Build & release
 
 on:
   push:
-    tags: ['v*']
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -14,15 +14,30 @@ permissions:
 jobs:
   windows:
     runs-on: windows-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Is this a new version?
+        id: ver
+        shell: bash
+        run: |
+          V=$(node -p "require('./package.json').version")
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          if gh release view "v$V" --repo "${{ github.repository }}" >/dev/null 2>&1; then
+            echo "Release v$V already exists - nothing to build."
+            echo "new=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "new=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Point the updater at this repository
+        if: steps.ver.outputs.new == 'true'
         run: npm pkg set "repository=github:${{ github.repository }}"
-      - run: npm install
+      - if: steps.ver.outputs.new == 'true'
+        run: npm install
       - name: Build installer and publish release
+        if: steps.ver.outputs.new == 'true'
         run: npx electron-builder --win nsis --x64 --publish always -c.publish.provider=github -c.publish.releaseType=release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
