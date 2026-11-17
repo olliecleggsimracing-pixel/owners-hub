@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0B0D">
+<title>The Owners Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0B0D; --s1:#131518; --s2:#1A1D21; --s3:#22262B; --line:#272B31; --line2:#33383F;
+  --text:#F3F4F6; --muted:#8C929B; --dim:#5D636C;
+  --ok:#4ADE80; --soon:#FBBF24; --over:#F87171; --none:#7C838D;
+  --r:18px; --r-sm:12px;
+  --safe-b:env(safe-area-inset-bottom,0px); --safe-t:env(safe-area-inset-top,0px);
+  --head:'Archivo',system-ui,sans-serif; --body:'Inter',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.45}
+body{min-height:100vh}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+.app{max-width:480px;margin:0 auto;min-height:100vh;position:relative;padding:calc(var(--safe-t) + 0px) 0 calc(96px + var(--safe-b))}
+@media(min-width:520px){.app{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:rgba(10,11,13,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:14px 18px 10px;border-bottom:1px solid transparent}
+.top.scrolled{border-bottom-color:var(--line)}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{width:38px;height:38px;border-radius:11px;background:var(--text);color:var(--bg);display:grid;place-items:center;font-family:var(--head);font-weight:800;font-stretch:110%;font-size:15px;letter-spacing:-.5px;flex:none}
+.brand-t{font-family:var(--head);font-weight:700;font-stretch:118%;letter-spacing:1.6px;font-size:13px;text-transform:uppercase;line-height:1.1}
+.brand-s{font-size:11px;color:var(--muted);letter-spacing:.4px;margin-top:2px}
+.sync{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted)}
+.sync i{width:7px;height:7px;border-radius:50%;background:var(--none);display:block}
+.sync.on i{background:var(--ok)} .sync.busy i{background:var(--soon)}
+.cars{display:flex;gap:8px;overflow-x:auto;padding:12px 0 2px;scrollbar-width:none}
+.cars::-webkit-scrollbar{display:none}
+.chip{flex:none;display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:999px;background:var(--s1);border:1px solid var(--line);font-size:13px;font-weight:500;color:var(--muted);white-space:nowrap}
+.chip.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.chip .dot{width:7px;height:7px;border-radius:50%}
+.chip.add{color:var(--text)}
+
+main{padding:6px 18px 20px}
+.h1{font-family:var(--head);font-weight:750;font-stretch:112%;font-size:28px;letter-spacing:-.6px;line-height:1.05;margin:14px 0 4px}
+.eyebrow{font-family:var(--head);font-stretch:118%;font-weight:600;font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);margin:26px 2px 10px;display:flex;align-items:center;justify-content:space-between}
+.eyebrow button{font-family:var(--body);letter-spacing:0;text-transform:none;font-size:13px;color:var(--text);font-weight:500}
+.sub{color:var(--muted);font-size:13.5px}
+
+.card{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.list{display:flex;flex-direction:column;gap:8px}
+.row{display:flex;align-items:center;gap:12px;background:var(--s1);border:1px solid var(--line);border-radius:var(--r-sm);padding:13px 14px;text-align:left;width:100%}
+.row:active{background:var(--s2)}
+.row .main{flex:1;min-width:0}
+.row .t{font-weight:600;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .m{font-size:12.5px;color:var(--muted);margin-top:2px}
+.row .r{text-align:right;font-size:12.5px;color:var(--muted);flex:none}
+.row .r b{display:block;color:var(--text);font-weight:600;font-size:14px}
+.ico{width:36px;height:36px;border-radius:10px;background:var(--s2);display:grid;place-items:center;flex:none;color:var(--muted)}
+.ico svg{width:18px;height:18px}
+
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;letter-spacing:.3px;padding:3px 8px;border-radius:999px;white-space:nowrap;text-transform:uppercase}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.st-ok{color:var(--ok);background:rgba(74,222,128,.1)}
+.st-soon{color:var(--soon);background:rgba(251,191,36,.12)}
+.st-over{color:var(--over);background:rgba(248,113,113,.12)}
+.st-none{color:var(--none);background:rgba(124,131,141,.14)}
+.st-plain{color:var(--muted);background:var(--s2)} .st-plain::before{display:none}
+.c-ok{background:var(--ok)}.c-soon{background:var(--soon)}.c-over{background:var(--over)}.c-none{background:var(--none)}
+
+/* hero */
+.hero{background:linear-gradient(160deg,#1A1D21 0%,#111316 60%);border:1px solid var(--line);border-radius:22px;padding:18px;position:relative;overflow:hidden;margin-top:10px}
+.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;border:1px solid rgba(255,255,255,.05);box-shadow:0 0 0 30px rgba(255,255,255,.015),0 0 0 60px rgba(255,255,255,.01)}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;position:relative;z-index:1}
+.car-name{font-family:var(--head);font-weight:750;font-stretch:112%;font-size:24px;letter-spacing:-.4px;line-height:1.1}
+.car-spec{color:var(--muted);font-size:12.5px;margin-top:4px}
+.plate{background:#F5C400;color:#111;font-family:var(--head);font-weight:800;font-stretch:88%;font-size:15px;letter-spacing:1.4px;padding:5px 10px;border-radius:5px;white-space:nowrap;flex:none;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.25)}
+.odo{display:flex;align-items:flex-end;justify-content:space-between;margin-top:22px;position:relative;z-index:1}
+.odo-n{font-family:var(--head);font-weight:700;font-stretch:100%;font-size:40px;letter-spacing:-1px;line-height:1;font-variant-numeric:tabular-nums}
+.odo-n small{font-size:15px;color:var(--muted);font-weight:500;margin-left:5px;letter-spacing:0}
+.odo-l{font-size:11.5px;color:var(--muted);margin-top:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:42px;padding:0 16px;border-radius:12px;background:var(--text);color:var(--bg);font-weight:600;font-size:14px;white-space:nowrap}
+.btn.ghost{background:var(--s2);color:var(--text);border:1px solid var(--line2)}
+.btn.danger{background:rgba(248,113,113,.12);color:var(--over)}
+.btn.sm{height:34px;padding:0 12px;font-size:13px;border-radius:10px}
+.btn.block{width:100%}
+.btn svg{width:16px;height:16px}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.stat{background:var(--s1);border:1px solid var(--line);border-radius:14px;padding:11px 10px;text-align:left}
+.stat b{display:block;font-family:var(--head);font-weight:700;font-size:22px;line-height:1.1}
+.stat span{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-top:3px}
+.stat span i{width:6px;height:6px;border-radius:50%;display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kv{background:var(--s1);border:1px solid var(--line);border-radius:14px;padding:13px 14px}
+.kv span{font-size:11.5px;color:var(--muted);display:block}
+.kv b{font-family:var(--head);font-weight:700;font-size:20px;display:block;margin-top:3px}
+
+.banner{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:14px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.2);margin-top:12px;font-size:13px;text-align:left;width:100%}
+.banner b{display:block;font-size:14px;margin-bottom:2px}
+.banner svg{width:20px;height:20px;color:var(--soon);flex:none;margin-top:1px}
+
+.bar{height:5px;background:var(--s3);border-radius:9px;overflow:hidden;margin-top:10px}
+.bar i{display:block;height:100%;border-radius:9px}
+
+.seg{display:flex;background:var(--s1);border:1px solid var(--line);border-radius:12px;padding:3px;margin-top:14px}
+.seg button{flex:1;height:34px;border-radius:9px;font-size:13.5px;font-weight:500;color:var(--muted)}
+.seg button.on{background:var(--s3);color:var(--text)}
+
+.svc{background:var(--s1);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px;text-align:left;width:100%;display:block}
+.svc:active{background:var(--s2)}
+.svc-h{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.svc-h .t{font-weight:600;font-size:15px}
+.svc-m{font-size:12.5px;color:var(--muted);margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 14px}
+.svc-m b{color:var(--text);font-weight:500}
+
+.empty{text-align:center;padding:44px 20px;border:1px dashed var(--line2);border-radius:22px;margin-top:14px}
+.empty .big{font-family:var(--head);font-weight:750;font-stretch:112%;font-size:22px;margin:14px 0 6px}
+.empty p{color:var(--muted);font-size:14px;margin:0 auto 20px;max-width:300px}
+.empty .stack{display:flex;flex-direction:column;gap:10px;max-width:300px;margin:0 auto}
+.diamond{width:22px;height:22px;border:2.5px solid var(--text);transform:rotate(45deg);margin:0 auto;border-radius:3px}
+
+.yr{font-size:12px;color:var(--dim);font-weight:600;margin:16px 4px 8px;letter-spacing:.5px}
+.note{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:10px}
+.fab{position:fixed;right:max(18px,calc(50vw - 222px));bottom:calc(88px + var(--safe-b));z-index:25;height:52px;padding:0 20px;border-radius:16px;background:var(--text);color:var(--bg);font-weight:650;display:flex;align-items:center;gap:8px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.fab svg{width:18px;height:18px}
+
+/* tabbar */
+.tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;z-index:30;background:rgba(14,15,18,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line);display:flex;padding:8px 8px calc(8px + var(--safe-b))}
+.tabs button{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:7px 0;border-radius:12px;font-size:10.5px;font-weight:500;color:var(--dim);position:relative}
+.tabs button svg{width:21px;height:21px}
+.tabs button.on{color:var(--text);background:var(--s2)}
+.tabs .badge{position:absolute;top:3px;left:calc(50% + 6px);min-width:16px;height:16px;border-radius:8px;background:var(--over);color:#fff;font-size:10px;font-weight:700;display:grid;place-items:center;padding:0 4px}
+
+/* sheet */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;opacity:0;transition:opacity .2s;pointer-events:none}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:50%;bottom:0;transform:translate(-50%,105%);width:100%;max-width:480px;max-height:92vh;overflow-y:auto;z-index:60;background:var(--s1);border:1px solid var(--line);border-bottom:0;border-radius:24px 24px 0 0;padding:8px 18px calc(22px + var(--safe-b));transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.sheet{visibility:hidden}.sheet.on{transform:translate(-50%,0);visibility:visible}
+.grab{width:38px;height:4px;border-radius:4px;background:var(--line2);margin:4px auto 12px}
+.sh-t{font-family:var(--head);font-weight:750;font-stretch:110%;font-size:21px;letter-spacing:-.3px;margin:0 0 4px}
+.sh-s{color:var(--muted);font-size:13px;margin-bottom:14px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px 10px;margin-top:8px}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.f.full{grid-column:1/-1}
+.f label{font-size:12px;color:var(--muted);font-weight:500}
+.f input,.f select,.f textarea{width:100%;background:var(--bg);border:1px solid var(--line2);border-radius:11px;padding:11px 12px;font-size:16px;outline:none;min-height:46px}
+.f textarea{min-height:76px;resize:vertical}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--muted)}
+.f input[type=date]{color-scheme:dark}
+.f select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238C929B' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px}
+.checks{display:flex;flex-wrap:wrap;gap:7px}
+.checks label{display:flex;align-items:center;gap:7px;padding:9px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--line2);font-size:13.5px;color:var(--text);cursor:pointer}
+.checks input{display:none}
+.checks label:has(input:checked){background:var(--text);color:var(--bg);border-color:var(--text)}
+.sh-actions{display:flex;gap:10px;margin-top:18px}
+.sh-actions .btn{flex:1;height:48px}
+.dl{display:grid;grid-template-columns:auto 1fr;gap:9px 16px;font-size:13.5px;margin:12px 0}
+.dl dt{color:var(--muted)} .dl dd{margin:0;text-align:right;font-weight:500}
+.toast{position:fixed;left:50%;bottom:calc(100px + var(--safe-b));transform:translate(-50%,20px);background:var(--text);color:var(--bg);padding:11px 16px;border-radius:12px;font-size:13.5px;font-weight:600;z-index:90;opacity:0;transition:.25s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.link{color:var(--text);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--dim);font-size:13px}
+.carlbl{font-size:11px;color:var(--dim);font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+.roadmap .row{padding:11px 14px}
+.mstone{font-family:var(--head);font-weight:700;font-size:14px;width:62px;flex:none;font-variant-numeric:tabular-nums}
+.spin{width:26px;height:26px;border-radius:50%;border:2.5px solid var(--line2);border-top-color:var(--text);animation:sp 0.9s linear infinite;flex:none}@keyframes sp{to{transform:rotate(360deg)}}
+.lockbox{display:flex;align-items:center;gap:8px;min-height:46px;padding:0 12px;border-radius:11px;background:var(--bg);border:1px dashed var(--line2);color:var(--muted);font-size:14px}
+.lockbox.locked{border-style:solid;background:var(--s2);color:var(--text)}.lockbox.locked svg{color:var(--muted);flex:none}.lockbox.locked span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spin.sm{width:16px;height:16px;border-width:2px}
+button.link{font-size:12.5px;color:var(--text);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--dim);flex:none}
+.drop{display:flex;align-items:center;justify-content:center;min-height:150px;border:1.5px dashed var(--line2);border-radius:16px;cursor:pointer;text-align:center}
+.drop>span{display:flex;flex-direction:column;align-items:center;gap:6px}.drop svg{width:28px;height:28px;color:var(--muted)}
+.tick{width:22px;height:22px;border-radius:7px;border:1.5px solid var(--line2);display:grid;place-items:center;font-size:13px;font-weight:700;flex:none;margin-top:1px}
+.hrow.on .tick{background:var(--text);color:var(--bg);border-color:var(--text)}.hrow:not(.on){opacity:.55}
+.updbtn{margin-left:auto!important;height:30px;padding:0 12px;border-radius:999px;background:var(--ok);color:#06210f;font-weight:700;font-size:12.5px;margin-left:10px;flex:none}.updbtn[hidden]{display:none}
+.gear{width:38px;height:38px;border-radius:11px;background:var(--s1);border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);flex:none;margin-left:10px}.gear:hover{color:var(--text)}
+.warn{color:var(--soon);font-size:11.5px;margin-top:3px}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <header class="top" id="top">
+    <div class="brand">
+      <div class="logo">OH.</div>
+      <div><div class="brand-t">The Owners Hub</div><div class="brand-s">Your garage, kept.</div></div>
+      <div class="sync on" id="sync"><i></i><span>Saved on this PC</span></div><button class="updbtn" id="updbtn" data-act="update-open" hidden>Update</button><button class="gear" data-act="settings" title="Settings" aria-label="Settings"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+    </div>
+    <div class="cars" id="cars"></div>
+  </header>
+  <main id="main"></main>
+</div>
+<nav class="tabs" id="tabs"></nav>
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- utilities ---------- */
+const $=s=>document.querySelector(s);
+const uid=()=>Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-4);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clone=o=>JSON.parse(JSON.stringify(o));
+const pad=n=>String(n).padStart(2,'0');
+const todayISO=()=>{const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+const parseD=s=>{const [y,m,d]=s.split('-').map(Number);return Date.UTC(y,m-1,d)};
+const daysBetween=(a,b)=>Math.round((parseD(b)-parseD(a))/864e5);
+const addDays=(s,n)=>new Date(parseD(s)+n*864e5).toISOString().slice(0,10);
+const addMonths=(s,n)=>{const [y,m,d]=s.split('-').map(Number);const t=new Date(Date.UTC(y,m-1+n,1));const last=new Date(Date.UTC(t.getUTCFullYear(),t.getUTCMonth()+1,0)).getUTCDate();t.setUTCDate(Math.min(d,last));return t.toISOString().slice(0,10)};
+const fmtD=s=>s?new Date(parseD(s)).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}):'—';
+const num=n=>Math.round(n).toLocaleString('en-GB');
+const mi=n=>n==null||n===''||isNaN(n)?'—':num(n)+' mi';
+const gbp=n=>'£'+(Number(n)||0).toLocaleString('en-GB',{maximumFractionDigits:0});
+const has=v=>v!==null&&v!==undefined&&v!=='';
+function relDays(d){if(d==null)return'';if(d===0)return'today';if(d===1)return'tomorrow';if(d===-1)return'yesterday';if(d<0)return Math.abs(d)+' days ago';if(d<60)return'in '+d+' days';const m=Math.round(d/30.4);return'in '+m+' months'}
+
+const IC={
+  garage:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-5 9 5v12"/><path d="M7 21v-8h10v8M7 17h10"/></svg>',
+  wrench:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+  bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>',
+  bolt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>',
+  car:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3v-5l2-5h14l2 5v5h-2"/><circle cx="7.5" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/><path d="M9.5 17h5M3 12h18"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="m9 6 6 6-6 6"/></svg>',
+  cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>',
+  alert:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>',
+  doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>',
+  cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+  flag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22V4M4 4h13l-2 4 2 4H4"/></svg>',
+};
+
+/* ---------- templates ---------- */
+const STATUS_ORDER={over:0,soon:1,none:2,ok:3};
+const MOD_STATUSES=['Idea','Considering','Ordered','Fitted'];
+
+const BODY=['Hatchback','Saloon','Estate','SUV','Coupe','Convertible','MPV','Pickup','Van','Other'];
+const FUEL=['Petrol','Diesel','Mild hybrid (MHEV)','Hybrid (HEV)','Plug-in hybrid (PHEV)','Electric (EV)','LPG','Other'];
+const GEARBOX=['Manual','Automatic (torque converter)','Dual-clutch (DSG / S tronic / PDK etc.)','CVT','Single-speed (EV)','Other'];
+const DRIVE=['Front-wheel drive','Rear-wheel drive','All-wheel drive / 4x4'];
+const USAGE=[['normal','Normal driving'],['severe','Severe (short trips, towing, track, dusty)']];
+const isEV=c=>/Electric/.test(c.fuel||'');
+function basicPlan(c){
+  const ev=isEV(c);
+  const rows=ev?[['Annual inspection',null,12,'Brakes, tyres, suspension, HV system check.','inspection'],['Brake fluid',null,24,'Usually every 2 years.','brake-fluid'],['Cabin / pollen filter',null,24,'','cabin-filter'],['Coolant (battery / motor)',null,48,'Check your handbook.','coolant']]
+   :[['Engine oil + filter',10000,12,'Check your handbook for the correct oil spec and interval.','oil'],['Full inspection',20000,24,'Brakes, tyres, suspension, leaks, fluids, warning lights.','inspection'],['Brake fluid',null,24,'Usually every 2 years.','brake-fluid'],['Cabin / pollen filter',null,24,'','cabin-filter'],['Engine air filter',20000,36,'','air-filter'],['Coolant',null,60,'Check your handbook.','coolant']];
+  if(!ev&&/Petrol|hybrid|LPG/i.test(c.fuel||'Petrol'))rows.push(['Spark plugs',40000,48,'Check your handbook.','spark-plugs']);
+  return {summary:'A general starter plan. It is not specific to your car, so check the intervals against your handbook or run the manufacturer lookup.',regime:'Basic plan',confidence:'low',
+    items:rows.map(([task,miles,months,note,key])=>({key,task,miles,months,note})),services:[],notes:[],sources:[]};
+}
+function stdAdmin(){return ['MOT expiry','Insurance renewal','Vehicle tax (VED)','Breakdown cover'].map(label=>({id:uid(),label,provider:'',date:'',cost:null,notes:''}))}
+function normalize(c){
+  for(const k of ['schedule','log','mods','admin','reminders','plan','odo'])if(!Array.isArray(c[k]))c[k]=[];
+  if(!c.finance)c.finance={};
+  return c;
+}
+
+/* ---------- state ---------- */
+let state={cars:[],activeId:null,settings:{soonMiles:1000,soonDays:30}};
+const ui={tab:'garage',serviceView:'schedule',remFilter:'all'};
+const LS='owners-hub-v1';
+try{const s=localStorage.getItem(LS);if(s){const d=JSON.parse(s);if(d&&Array.isArray(d.cars)){state.cars=d.cars.map(normalize);state.activeId=d.activeId;if(d.settings)state.settings=d.settings}}}catch(e){}
+const car=()=>state.cars.find(c=>c.id===state.activeId)||state.cars[0]||null;
+const carById=id=>state.cars.find(c=>c.id===id);
+
+/* ---------- persistence: device cache + synced store ---------- */
+let col=null; const dirty=new Set(); const pend={}; const inflight={}; const lastSent={}; let flushT=null;
+function saveLocal(){try{localStorage.setItem(LS,JSON.stringify(state))}catch(e){}}
+function commit(c){ // c: car changed (or null for meta only)
+  if(c)dirty.add('car-'+c.id); dirty.add('meta');
+  saveLocal(); clearTimeout(flushT); flushT=setTimeout(flushAll,450); render();
+}
+function docFor(k){
+  if(k==='meta')return{activeId:state.activeId,settings:state.settings,order:state.cars.map(c=>c.id)};
+  const c=carById(k.slice(4)); return c?clone(c):null;
+}
+function flushAll(){
+  if(!col)return;
+  for(const k of [...dirty]){dirty.delete(k);const d=docFor(k);const j=JSON.stringify(d);if(lastSent[k]===j)continue;pend[k]=d;pump(k)}
+  setSync();
+}
+async function pump(k){
+  if(inflight[k])return;
+  while(k in pend){
+    const d=pend[k];delete pend[k];inflight[k]=true;setSync();
+    try{ if(d===null)await col.doc(k).delete(); else await col.doc(k).set(d); lastSent[k]=JSON.stringify(d); }
+    catch(e){
+      if(e&&e.code==='unavailable'){await new Promise(r=>setTimeout(r,800+Math.random()*900));if(!(k in pend))pend[k]=d;}
+      else if(e&&e.code==='quota_exceeded'){toast('Storage is full — export a backup');}
+      else {col=null;}
+    }
+    inflight[k]=false;
+  }
+  setSync();
+}
+const busy=k=>dirty.has(k)||(k in pend)||inflight[k];
+function setSync(){
+  const el=$('#sync');const working=Object.values(inflight).some(Boolean)||Object.keys(pend).length;
+  el.className='sync'+(col?(working?' busy':' on'):' on');
+  el.querySelector('span').textContent=col?(working?'Saving…':'Synced'):'Saved on this PC';
+}
+async function initStore(){
+  if(!window.claude||!claude.use)return;
+  let db,user;
+  try{[db,user]=await Promise.all([claude.use('db'),claude.use('user')])}catch(e){return}
+  if(!db||!user)return;
+  let id=null;try{id=await user.id()}catch(e){}
+  if(!id)return;
+  let c;try{c=db.collection('data/users/'+id)}catch(e){return}
+  let first=true;
+  c.onSnapshot(snap=>{
+    const docs={};snap.docs.forEach(d=>{docs[d.id]=d.data()});
+    const carKeys=Object.keys(docs).filter(k=>k.startsWith('car-'));
+    if(!col){col=c;}
+    if(!carKeys.length&&!docs.meta){
+      if(snap.metadata.fromCache)return;
+      if(first&&state.cars.length){state.cars.forEach(x=>dirty.add('car-'+x.id));dirty.add('meta');flushAll()}
+      first=false;if(dirty.size)flushAll();setSync();return;
+    }
+    first=false;
+    const map={};state.cars.forEach(x=>map[x.id]=x);
+    carKeys.forEach(k=>{const d=docs[k];lastSent[k]=JSON.stringify(d);if(busy(k))return;map[k.slice(4)]=normalize(clone(d))});
+    Object.keys(map).forEach(id=>{const k='car-'+id;if(!docs[k]&&!busy(k))delete map[id]});
+    const meta=docs.meta||{};if(docs.meta)lastSent.meta=JSON.stringify(docs.meta);
+    const order=busy('meta')?state.cars.map(x=>x.id):(meta.order||[]);
+    const idx=id=>{const i=order.indexOf(id);return i<0?999:i};
+    state.cars=Object.values(map).sort((a,b)=>idx(a.id)-idx(b.id));
+    if(!busy('meta')){if(meta.settings)state.settings=meta.settings;if(meta.activeId&&map[meta.activeId])state.activeId=meta.activeId}
+    if(!carById(state.activeId))state.activeId=state.cars[0]?.id||null;
+    saveLocal();render();setSync();if(dirty.size)flushAll();
+  },()=>{col=null;setSync()});
+}
+
+/* ---------- domain logic ---------- */
+function rate(c){ // miles per day from odometer readings
+  const o=(c.odo||[]).filter(x=>x.date&&has(x.miles)).sort((a,b)=>a.date<b.date?-1:1);
+  if(o.length<2)return null;const a=o[0],b=o[o.length-1];const d=daysBetween(a.date,b.date);
+  if(d<14||b.miles<=a.miles)return null;return (b.miles-a.miles)/d;
+}
+function lastDone(c,item){
+  const es=c.log.filter(l=>(l.taskIds||[]).includes(item.id));
+  if(!es.length)return null;
+  return es.sort((a,b)=>(b.date||'').localeCompare(a.date||'')||((b.miles||0)-(a.miles||0)))[0];
+}
+function itemStatus(c,item){
+  const S=state.settings,t=todayISO(),last=lastDone(c,item);
+  const r={last,state:'none',nextMiles:null,nextDate:null,milesLeft:null,daysLeft:null,estDate:null,pct:0};
+  if(!last)return r;
+  if(item.miles&&has(last.miles)){r.nextMiles=Number(last.miles)+Number(item.miles);r.milesLeft=r.nextMiles-c.mileage;r.pct=Math.max(r.pct,(c.mileage-last.miles)/item.miles)}
+  if(item.months&&last.date){r.nextDate=addMonths(last.date,Number(item.months));r.daysLeft=daysBetween(t,r.nextDate);r.pct=Math.max(r.pct,daysBetween(last.date,t)/Math.max(1,daysBetween(last.date,r.nextDate)))}
+  const rt=rate(c);if(r.milesLeft!=null&&rt&&r.milesLeft>0)r.estDate=addDays(t,Math.round(r.milesLeft/rt));
+  if(r.nextMiles==null&&r.nextDate==null){r.state='none';return r}
+  if((r.milesLeft!=null&&r.milesLeft<0)||(r.daysLeft!=null&&r.daysLeft<0))r.state='over';
+  else if((r.milesLeft!=null&&r.milesLeft<=S.soonMiles)||(r.daysLeft!=null&&r.daysLeft<=S.soonDays))r.state='soon';
+  else r.state='ok';
+  return r;
+}
+function dateStatus(date){
+  if(!date)return{state:'none',daysLeft:null};
+  const d=daysBetween(todayISO(),date);
+  return{state:d<0?'over':d<=state.settings.soonDays?'soon':'ok',daysLeft:d};
+}
+const LABEL={over:'Overdue',soon:'Due soon',ok:'OK',none:'No history'};
+const pill=(st,txt)=>`<span class="pill st-${st}">${esc(txt||LABEL[st])}</span>`;
+
+function remindersFor(c){
+  const out=[];const rt=rate(c)||25;
+  c.schedule.forEach(it=>{const s=itemStatus(c,it);
+    const bits=[];if(s.milesLeft!=null)bits.push(s.milesLeft<0?mi(-s.milesLeft)+' over':mi(s.milesLeft)+' left');if(s.nextDate)bits.push(s.daysLeft<0?'was due '+fmtD(s.nextDate):'by '+fmtD(s.nextDate));
+    const score=Math.min(s.daysLeft??1e6,s.milesLeft!=null?s.milesLeft/rt:1e6);
+    out.push({car:c,kind:'service',id:it.id,title:it.task,sub:s.state==='none'?'Log the last time this was done':bits.join(' · '),state:s.state,date:s.nextDate||s.estDate,est:!s.nextDate&&!!s.estDate,score});
+  });
+  c.admin.forEach(a=>{const s=dateStatus(a.date);
+    out.push({car:c,kind:'admin',id:a.id,title:a.label,sub:a.date?(s.daysLeft<0?'Expired '+fmtD(a.date):fmtD(a.date)+' · '+relDays(s.daysLeft)):'Add the date',state:a.date?s.state:'none',noneLabel:'Add date',date:a.date,score:s.daysLeft??1e6});
+  });
+  c.reminders.filter(r=>!r.done).forEach(r=>{
+    let st='ok',score=1e6,bits=[];
+    if(r.date){const s=dateStatus(r.date);st=s.state;score=s.daysLeft;bits.push(fmtD(r.date)+' · '+relDays(s.daysLeft))}
+    if(has(r.miles)){const left=r.miles-c.mileage;const ms=left<0?'over':left<=state.settings.soonMiles?'soon':'ok';if(STATUS_ORDER[ms]<STATUS_ORDER[st])st=ms;score=Math.min(score,left/rt);bits.push(left<0?'at '+mi(r.miles)+' (passed)':'at '+mi(r.miles)+' · '+mi(left)+' to go')}
+    out.push({car:c,kind:'custom',id:r.id,title:r.title,sub:bits.join(' · ')||'No date set',state:st,date:r.date,score});
+  });
+  return out.sort((a,b)=>STATUS_ORDER[a.state]-STATUS_ORDER[b.state]||a.score-b.score);
+}
+function worst(c){const rs=remindersFor(c).filter(r=>r.state==='over'||r.state==='soon');return rs.length?rs[0].state:'ok'}
+function gcalLink(r){
+  if(!r.date)return null;const d=r.date.replace(/-/g,''),e=addDays(r.date,1).replace(/-/g,'');
+  const p=new URLSearchParams({action:'TEMPLATE',text:`${r.car.name}: ${r.title}`,dates:`${d}/${e}`,details:`${r.sub}${r.est?' (estimated from your mileage)':''}\n\nFrom The Owners Hub`});
+  return 'https://calendar.google.com/calendar/render?'+p.toString();
+}
+
+/* ---------- render: shell ---------- */
+const TABS=[['garage','Garage',IC.garage],['service','Service',IC.wrench],['reminders','Reminders',IC.bell],['build','Build',IC.bolt],['car','My Car',IC.car]];
+function render(){
+  const c=car();
+  if(c&&state.activeId!==c.id)state.activeId=c.id;
+  // car chips
+  $('#cars').innerHTML=state.cars.length?state.cars.map(x=>`<button class="chip ${x.id===state.activeId?'on':''}" data-car="${x.id}"><span class="dot c-${worst(x)}"></span>${esc(x.name)}</button>`).join('')+`<button class="chip add" data-act="add-car">${IC.plus.replace('<svg','<svg width="14" height="14"')} Add car</button>`:'';
+  $('#cars').style.display=state.cars.length?'flex':'none';
+  // tabs
+  const overdue=state.cars.reduce((n,x)=>n+remindersFor(x).filter(r=>r.state==='over').length,0);
+  $('#tabs').innerHTML=TABS.map(([k,l,i])=>`<button class="${ui.tab===k?'on':''}" data-tab="${k}">${i}<span>${l}</span>${k==='reminders'&&overdue?`<span class="badge">${overdue}</span>`:''}</button>`).join('');
+  const m=$('#main');
+  if(!c&&ui.tab!=='reminders'){m.innerHTML=viewEmpty();return}
+  m.innerHTML=({garage:viewGarage,service:viewService,reminders:viewReminders,build:viewBuild,car:viewCar})[ui.tab](c);
+}
+function viewEmpty(){
+  return `<div class="h1" style="margin-top:22px">Your garage, kept.</div><div class="sub">Every car has a story. Keep yours in one place.</div>
+  <div class="empty"><div class="diamond"></div><div class="big">No cars yet</div>
+  <p>Add your car's details and we'll find the manufacturer's service schedule, then track every service, MOT, mod and reminder in one place.</p>
+  <div class="stack"><button class="btn block" data-act="add-car">${IC.plus} Add your first car</button></div></div>`;
+}
+
+/* ---------- Garage ---------- */
+function updBanner(){
+  if(!['available','downloading','ready'].includes(upd.state))return'';
+  return `<button class="banner" data-act="update-open" style="background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.3)"><span style="color:var(--ok)">${IC.bolt.replace('<svg','<svg style="color:var(--ok)"')}</span><span><b>${upd.state==='ready'?'Update ready to install':'Update available'}${upd.version?' · v'+esc(upd.version):''}</b>${upd.state==='downloading'?'Downloading… '+(upd.percent||0)+'%':'Tap to see what\'s new and update.'}</span></button>`;
+}
+function viewGarage(c){
+  const rs=remindersFor(c);const cnt=k=>rs.filter(r=>r.kind==='service'&&r.state===k).length;
+  const noHist=c.schedule.filter(it=>!lastDone(c,it)).length;
+  const adminMissing=c.admin.filter(a=>!a.date).length;
+  const lastOdo=(c.odo||[]).slice(-1)[0];
+  const svcSpend=c.log.reduce((s,l)=>s+(Number(l.cost)||0),0);
+  const modSpend=c.mods.reduce((s,m)=>s+(Number(m.spent)||0),0);
+  const upNext=rs.filter(r=>r.state==='over'||r.state==='soon'||(r.state==='ok'&&r.date)).slice(0,5);
+  return `${updBanner()}
+  <div class="hero">
+    <div class="hero-top"><div><div class="car-name">${esc(c.name)}</div><div class="car-spec">${esc(specLine(c))}</div></div>${c.reg?`<div class="plate">${esc(c.reg.toUpperCase())}</div>`:`<button class="plate" style="background:var(--s3);color:var(--muted);box-shadow:none;font-size:12px" data-act="edit-car">+ REG</button>`}</div>
+    <div class="odo"><div><div class="odo-n">${num(c.mileage||0)}<small>mi</small></div><div class="odo-l">Odometer${lastOdo?' · updated '+fmtD(lastOdo.date):''}</div></div>
+    <button class="btn sm" data-act="mileage">Log miles</button></div>
+  </div>
+  <div class="stats">
+    <button class="stat" data-tab="service"><b>${cnt('over')}</b><span><i class="c-over"></i>Overdue</span></button>
+    <button class="stat" data-tab="service"><b>${cnt('soon')}</b><span><i class="c-soon"></i>Due soon</span></button>
+    <button class="stat" data-tab="service"><b>${cnt('ok')}</b><span><i class="c-ok"></i>OK</span></button>
+    <button class="stat" data-tab="service"><b>${cnt('none')}</b><span><i class="c-none"></i>No history</span></button>
+  </div>
+  ${!c.mfr||c.mfr.source==='basic'?`<button class="banner" data-act="lookup" style="background:var(--s1);border-color:var(--line2)"><span style="color:var(--text)">${IC.doc.replace('<svg','<svg style="color:var(--text)"')}</span><span><b>Get ${esc(c.make||'your')}'s service schedule</b>Look up the manufacturer's intervals and what's done at each service for your exact car.</span></button>`:''}
+  ${noHist?`<button class="banner" data-act="history"><span>${IC.alert}</span><span><b>${noHist} service item${noHist>1?'s have':' has'} no history</b>Log the last time each job was done, with date and mileage, and the app will work out when it's next due. Your service book or the dealer's digital service record is a good place to start.</span></button>`:''}
+  ${adminMissing?`<button class="banner" data-tab="car" style="background:rgba(124,131,141,.08);border-color:var(--line2)"><span style="color:var(--muted)">${IC.cal.replace('<svg','<svg style="color:var(--muted)"')}</span><span><b>${adminMissing} key date${adminMissing>1?'s':''} missing</b>Add your MOT, insurance and tax dates from your documents to get reminders.</span></button>`:''}
+  <div class="eyebrow">Up next <button data-tab="reminders">All reminders</button></div>
+  <div class="list">${upNext.length?upNext.map(remRow).join(''):`<div class="card sub">${noHist||adminMissing?'Nothing scheduled yet. Log your service history and add your key dates to see what\'s coming up.':'Nothing due. Nice.'}</div>`}</div>
+  <div class="eyebrow">Ownership totals</div>
+  <div class="grid2">
+    <div class="kv"><span>Service spend</span><b>${gbp(svcSpend)}</b></div>
+    <div class="kv"><span>Build spend</span><b>${gbp(modSpend)}</b></div>
+    ${has(c.finance.monthly)?`<div class="kv"><span>Monthly finance</span><b>${gbp(c.finance.monthly)}</b></div>`:''}
+    ${has(c.finance.balloon)?`<div class="kv"><span>Balloon payment</span><b>${gbp(c.finance.balloon)}</b></div>`:''}
+  </div>
+  ${c.goal?`<div class="eyebrow">Build goal</div><button class="row" data-tab="build"><span class="ico">${IC.flag}</span><span class="main"><div class="t">${esc(c.goal)}</div><div class="m">${c.mods.filter(m=>m.status==='Fitted').length} of ${c.mods.length} parts fitted</div></span>${IC.chev}</button>`:''}
+  <div class="eyebrow">Each month</div>
+  <div class="card note" style="margin:0">Update the mileage · check service statuses · inspect tyres, brakes and fluids · log any work with receipt details · check MOT and insurance dates.</div>`;
+}
+function remRow(r,showCar){
+  const cl=gcalLink(r);
+  return `<button class="row" data-rem="${r.kind}:${r.id}" data-carid="${r.car.id}">
+    <span class="ico">${r.kind==='service'?IC.wrench:r.kind==='admin'?IC.doc:IC.bell}</span>
+    <span class="main">${showCar?`<div class="carlbl">${esc(r.car.name)}</div>`:''}<div class="t">${esc(r.title)}</div><div class="m">${esc(r.sub)}${r.est?' (est.)':''}</div></span>
+    <span class="r">${pill(r.state,r.state==='none'?(r.noneLabel||'No history'):null)}</span></button>`;
+}
+
+/* ---------- Service ---------- */
+function viewService(c){
+  const v=ui.serviceView;
+  let body='';
+  if(v==='schedule'){
+    const items=c.schedule.map(it=>({it,s:itemStatus(c,it)})).sort((a,b)=>STATUS_ORDER[a.s.state]-STATUS_ORDER[b.s.state]);
+    body=`<div class="list" style="margin-top:14px">${items.map(({it,s})=>`
+      <button class="svc" data-item="${it.id}">
+        <div class="svc-h"><span class="t">${esc(it.task)}</span>${pill(s.state)}</div>
+        <div class="svc-m">${s.last?`
+          ${s.nextMiles!=null?`<span>Next <b>${mi(s.nextMiles)}</b></span>`:''}
+          ${s.nextDate?`<span>by <b>${fmtD(s.nextDate)}</b></span>`:''}
+          ${s.milesLeft!=null?`<span>${s.milesLeft<0?mi(-s.milesLeft)+' overdue':mi(s.milesLeft)+' to go'}</span>`:''}`
+          :`<span>${everyTxt(it.miles,it.months)} · tap to log last done</span>`}</div>
+        ${s.last?`<div class="bar"><i class="c-${s.state}" style="width:${Math.min(100,Math.max(3,s.pct*100))}%"></i></div>`:''}
+      </button>`).join('')}</div>
+      <p class="note">Whichever comes first, mileage or time. "No history" means unknown, not missed. The app never assumes a job was done.</p>`;
+  }else{
+    const log=[...c.log].sort((a,b)=>(b.date||'').localeCompare(a.date||'')||(b.miles||0)-(a.miles||0));
+    if(!log.length)body=`<div class="empty"><div class="diamond"></div><div class="big">No history yet</div><p>Add past services from your service book, invoices or the dealer's digital record, then log every job from now on.</p><button class="btn" data-act="history">${IC.plus} Add service history</button></div>`;
+    else{let yr='';body=`<button class="btn ghost block" data-act="history" style="margin-top:14px">${IC.cam} Add past history</button>`+log.map(l=>{const y=(l.date||'').slice(0,4);const h=y!==yr?`<div class="yr">${y||'Undated'}</div>`:'';yr=y;
+      const names=(l.taskIds||[]).map(id=>c.schedule.find(s=>s.id===id)?.task).filter(Boolean);
+      return h+`<button class="row" data-log="${l.id}" style="margin-bottom:8px"><span class="ico">${IC.wrench}</span><span class="main"><div class="t">${esc(l.title||names.join(', ')||'Service')}</div><div class="m">${fmtD(l.date)} · ${mi(l.miles)}${l.garage?' · '+esc(l.garage):''}</div>${l.title&&names.length?`<div class="m">${esc(names.join(', '))}</div>`:''}</span><span class="r">${has(l.cost)?`<b>${gbp(l.cost)}</b>`:''}</span></button>`}).join('')}
+  }
+  return `<div class="h1">Service</div><div class="sub">${esc(c.name)} · ${mi(c.mileage)}</div>
+  <div class="seg"><button class="${v==='schedule'?'on':''}" data-sv="schedule">Schedule</button><button class="${v==='history'?'on':''}" data-sv="history">History (${c.log.length})</button></div>
+  ${body}<button class="fab" data-act="log">${IC.plus} Log work</button>`;
+}
+
+/* ---------- Reminders ---------- */
+function viewReminders(){
+  if(!state.cars.length)return viewEmpty();
+  let all=state.cars.flatMap(remindersFor);
+  const f=ui.remFilter;
+  const counts={over:all.filter(r=>r.state==='over').length,soon:all.filter(r=>r.state==='soon').length};
+  if(f==='attn')all=all.filter(r=>r.state==='over'||r.state==='soon');
+  if(f==='dated')all=all.filter(r=>r.date).sort((a,b)=>a.date.localeCompare(b.date));
+  else all.sort((a,b)=>STATUS_ORDER[a.state]-STATUS_ORDER[b.state]||a.score-b.score);
+  const multi=state.cars.length>1;
+  const groups=f==='dated'?[['Upcoming dates',all]]:[['Overdue',all.filter(r=>r.state==='over')],['Due soon',all.filter(r=>r.state==='soon')],['Needs info',all.filter(r=>r.state==='none')],['Coming up',all.filter(r=>r.state==='ok')]];
+  return `<div class="h1">Reminders</div><div class="sub">${counts.over} overdue · ${counts.soon} due soon${multi?' · across '+state.cars.length+' cars':''}</div>
+  <div class="seg"><button class="${f==='all'?'on':''}" data-rf="all">All</button><button class="${f==='attn'?'on':''}" data-rf="attn">Needs attention</button><button class="${f==='dated'?'on':''}" data-rf="dated">Calendar</button></div>
+  ${groups.filter(g=>g[1].length).map(([t,rs])=>`<div class="eyebrow">${t}</div><div class="list">${t==='Needs info'?needsInfoRows(rs):rs.map(r=>remRow(r,multi)).join('')}</div>`).join('')||'<div class="card sub" style="margin-top:14px">Nothing here.</div>'}
+  <div class="eyebrow">Alert thresholds</div>
+  <button class="row" data-act="thresholds"><span class="ico">${IC.bell}</span><span class="main"><div class="t">Flag as "due soon"</div><div class="m">${mi(state.settings.soonMiles)} or ${state.settings.soonDays} days before</div></span>${IC.chev}</button>
+  <p class="note">To get a phone alert, open a dated reminder and tap <b>Add to calendar</b>. Mileage-based items get an estimated date once you've logged mileage a few weeks apart.</p>
+  <button class="fab" data-act="add-rem">${IC.plus} Reminder</button>`;
+}
+
+function needsInfoRows(rs){
+  return state.cars.map(c=>{const mine=rs.filter(r=>r.car===c);if(!mine.length)return'';
+    const sv=mine.filter(r=>r.kind==='service'),ad=mine.filter(r=>r.kind==='admin');
+    return (sv.length?`<button class="row" data-goto="service" data-carid="${c.id}"><span class="ico">${IC.wrench}</span><span class="main"><div class="carlbl">${esc(c.name)}</div><div class="t">${sv.length} service item${sv.length>1?'s':''} with no history</div><div class="m">${esc(sv.map(r=>r.title).join(', '))}</div></span>${IC.chev}</button>`:'')+
+      (ad.length?`<button class="row" data-goto="car" data-carid="${c.id}"><span class="ico">${IC.doc}</span><span class="main"><div class="carlbl">${esc(c.name)}</div><div class="t">${ad.length} key date${ad.length>1?'s':''} to add</div><div class="m">${esc(ad.map(r=>r.title).join(', '))}</div></span>${IC.chev}</button>`:'');
+  }).join('');
+}
+
+/* ---------- Build ---------- */
+function viewBuild(c){
+  const fitted=c.mods.filter(m=>m.status==='Fitted');
+  const budget=c.mods.reduce((s,m)=>s+(Number(m.budget)||0),0);
+  const spent=c.mods.reduce((s,m)=>s+(Number(m.spent)||0),0);
+  const pct=budget?Math.min(100,spent/budget*100):0;
+  const groups=[...MOD_STATUSES].reverse().map(st=>[st,c.mods.filter(m=>(m.status||'Idea')===st)]).filter(g=>g[1].length);
+  const stCls={Fitted:'ok',Ordered:'soon',Considering:'plain',Idea:'plain'};
+  return `<div class="h1">Build</div><div class="sub">${esc(c.goal||'Mods, upgrades and parts')}</div>
+  <div class="card" style="margin-top:14px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end"><div><div class="sub" style="font-size:12px">Spent</div><div style="font-family:var(--head);font-weight:700;font-size:28px">${gbp(spent)}</div></div>
+    <div style="text-align:right"><div class="sub" style="font-size:12px">Planned budget</div><div style="font-family:var(--head);font-weight:600;font-size:18px">${gbp(budget)}</div></div></div>
+    <div class="bar" style="height:7px"><i style="width:${pct}%;background:var(--text)"></i></div>
+    <div class="sub" style="font-size:12.5px;margin-top:8px">${fitted.length} of ${c.mods.length} fitted</div>
+  </div>
+  ${groups.map(([st,ms])=>`<div class="eyebrow">${st}</div><div class="list">${ms.map(m=>`
+    <button class="row" data-mod="${m.id}"><span class="main"><div class="t">${esc(m.name)}</div><div class="m">${esc(m.purpose||'')}${m.status==='Fitted'&&m.fitDate?' · fitted '+fmtD(m.fitDate):''}</div>
+    ${m.status==='Fitted'&&!m.insurerTold?`<div class="warn">Insurer not told yet</div>`:''}</span>
+    <span class="r"><b>${has(m.spent)?gbp(m.spent):has(m.budget)?gbp(m.budget):''}</b>${has(m.spent)?'spent':has(m.budget)?'budget':''}</span></button>`).join('')}</div>`).join('')}
+  ${!c.mods.length?`<div class="empty"><div class="diamond"></div><div class="big">No mods yet</div><p>Plan parts, track spend and record when they're fitted.</p></div>`:''}
+  <p class="note">Planned items are ideas, not fitted parts. Only mark something Fitted once it's on the car, and check your finance, insurance, MOT/emissions and warranty first.</p>
+  <button class="fab" data-act="add-mod">${IC.plus} Add part</button>`;
+}
+
+/* ---------- My Car ---------- */
+function specLine(c){return [c.year,c.variant||c.model,c.engineSize,c.fuel&&c.fuel.replace(/ \(.*\)/,''),c.gearbox&&c.gearbox.replace(/ \(.*\)/,'')].filter(Boolean).join(' · ')}
+function carTitle(c){return [c.year,c.make,c.model,c.variant].filter(Boolean).join(' ')}
+function roadmap(c){
+  const svs=(c.mfr&&c.mfr.services||[]).filter(s=>s.everyMiles);if(!svs.length)return[];
+  const cands=new Set();svs.forEach(s=>{let m=Math.floor((c.mileage||0)/s.everyMiles+1)*s.everyMiles;for(let k=0;k<8;k++){cands.add(m);m+=s.everyMiles}});
+  return [...cands].sort((a,b)=>a-b).slice(0,ui.fullPlan?12:5).map(m=>({miles:m,services:svs.filter(s=>m%s.everyMiles===0)}));
+}
+const CONF={high:['ok','High confidence'],medium:['soon','Check handbook'],low:['none','General guidance']};
+function mfrBadge(m){if(!m)return'';if(m.source==='pasted')return pill('ok','From your handbook');if(m.source==='basic')return pill('none','Basic plan');const [st,l]=CONF[m.confidence]||CONF.medium;return pill(st,l)}
+function viewCar(c){
+  const det=[['Brand',c.make],['Model',c.model],['Variant',[c.variant,c.variantDetail].filter(Boolean).join(' · ')],['Trim',c.trim],['Registration',c.reg&&c.reg.toUpperCase()],['Year',c.year],['Body type',c.body],['Fuel',c.fuel],['Engine size',c.engineSize],['Gearbox',c.gearbox],['Drivetrain',c.drivetrain],['Colour',c.colour],['Driving',c.usage==='severe'?'Severe conditions':c.usage?'Normal':''],['First registered',c.firstReg&&fmtD(c.firstReg)],['VIN',c.vin]].filter(x=>has(x[1]));
+  const m=c.mfr;const rm=roadmap(c);
+  return `<div class="h1">${esc(c.name)}</div><div class="sub">${esc(specLine(c))}</div>
+  <div class="eyebrow">Vehicle <button data-act="edit-car">Edit</button></div>
+  <div class="card"><dl class="dl" style="margin:0">${det.map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')||'<dt>Add details</dt><dd></dd>'}</dl></div>
+  <div class="eyebrow">Manufacturer schedule</div>
+  ${m?`<div class="card">
+    <div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><div style="font-weight:600">${esc(m.regime||'Service schedule')}</div>${mfrBadge(m)}</div>
+    ${m.summary?`<div class="note" style="margin-top:8px">${esc(m.summary)}</div>`:''}
+    ${m.fetched?`<div class="note" style="margin-top:6px;color:var(--dim)">Set up ${fmtD(m.fetched)}</div>`:''}
+  </div>
+  ${m.services&&m.services.length?`<div class="list" style="margin-top:8px">${m.services.map(sv=>`<button class="row" data-svc="${sv.id}"><span class="ico">${IC.wrench}</span><span class="main"><div class="t">${esc(sv.name)}</div><div class="m">${esc(everyTxt(sv.everyMiles,sv.everyMonths))} · ${sv.includes.length} checks</div></span>${IC.chev}</button>`).join('')}</div>`:''}
+  ${m.notes&&m.notes.length?`<div class="card note" style="margin-top:8px">${m.notes.map(n=>'• '+esc(n)).join('<br>')}</div>`:''}
+  ${m.sources&&m.sources.length?`<div class="card" style="margin-top:8px"><div class="carlbl" style="margin-bottom:8px">Check against</div>${m.sources.map(x=>x.url?`<div style="margin:4px 0"><a class="link" href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a></div>`:`<div class="note" style="margin:4px 0">${esc(x.title)}</div>`).join('')}</div>`:''}
+  <div class="grid2" style="margin-top:8px"><button class="btn ghost" data-act="lookup">Look up again</button><button class="btn ghost" data-act="paste">Paste from handbook</button></div>`
+  :`<button class="banner" data-act="lookup" style="margin-top:0;background:var(--s1);border-color:var(--line2)"><span>${IC.doc}</span><span><b>Find ${esc(c.make||'the manufacturer')}'s schedule</b>Get the intervals and what's done at each service for this car.</span></button>`}
+  <div class="eyebrow">Tracked intervals <button data-act="add-item">+ Add item</button></div>
+  <div class="list">${c.schedule.map(it=>`<button class="row" data-edititem="${it.id}"><span class="main"><div class="t">${esc(it.task)}</div><div class="m">${esc(everyTxt(it.miles,it.months))}</div></span>${IC.chev}</button>`).join('')||'<div class="card sub">No intervals yet.</div>'}</div>
+  ${rm.length?`<div class="eyebrow">Upcoming services <button data-act="plan-toggle">${ui.fullPlan?'Show less':'Show more'}</button></div><div class="list roadmap">${rm.map((r,i)=>`<div class="row" style="${i===0?'border-color:var(--text)':''}"><span class="mstone">${(r.miles/1000).toLocaleString('en-GB',{maximumFractionDigits:1})}k</span><span class="main"><div class="t" style="white-space:normal">${esc(r.services.map(x=>x.name).join(' + '))}</div><div class="m">at ${mi(r.miles)} · ${mi(r.miles-c.mileage)} from now</div></span>${i===0?pill('soon','Next'):''}</div>`).join('')}</div><p class="note">By mileage only. Time-based items may fall due sooner; live due dates are on the Service tab.</p>`:''}
+  <div class="eyebrow">Key dates <button data-act="add-admin">+ Add</button></div>
+  <div class="list">${c.admin.map(a=>{const s=dateStatus(a.date);return `<button class="row" data-admin="${a.id}"><span class="ico">${IC.doc}</span><span class="main"><div class="t">${esc(a.label)}</div><div class="m">${a.date?fmtD(a.date)+' · '+relDays(s.daysLeft):'Add date'}${a.provider?' · '+esc(a.provider):''}</div></span><span class="r">${a.date?pill(s.state,s.state==='ok'?'Valid':null):pill('none','Add date')}</span></button>`}).join('')}</div>
+  <div class="eyebrow">Finance <button data-act="finance">Edit</button></div>
+  <div class="grid2"><div class="kv"><span>Monthly</span><b>${has(c.finance.monthly)?gbp(c.finance.monthly):'—'}</b></div><div class="kv"><span>Balloon / final</span><b>${has(c.finance.balloon)?gbp(c.finance.balloon):'—'}</b></div></div>
+  <div class="eyebrow">Notes <button data-act="edit-notes">Edit</button></div>
+  <div class="card note" style="margin:0;white-space:pre-wrap">${esc(c.notes||'No notes.')}</div>
+  <div class="eyebrow">Your data</div>
+  <div class="list">
+    <button class="row" data-act="export"><span class="ico">${IC.doc}</span><span class="main"><div class="t">Export backup</div><div class="m">All cars as a .json file</div></span>${IC.chev}</button>
+    <label class="row" style="cursor:pointer"><span class="ico">${IC.doc}</span><span class="main"><div class="t">Restore from backup</div><div class="m">Import a .json backup file</div></span>${IC.chev}<input type="file" accept=".json,application/json" id="importf" hidden></label>
+  </div>
+  <div style="margin-top:22px"><button class="btn danger block" data-act="del-car">Remove ${esc(c.name)} from garage</button></div>`;
+}
+function everyTxt(miles,months){return 'Every '+([miles?mi(miles):'',months?(months%12===0?(months/12)+(months===12?' year':' years'):months+' months'):''].filter(Boolean).join(' or ')||'—')}
+
+/* ---------- sheets & forms ---------- */
+let sheetSubmit=null;
+function openSheet(html,onSubmit){
+  $('#sheet').innerHTML='<div class="grab"></div>'+html;sheetSubmit=onSubmit||null;
+  $('#scrim').classList.add('on');$('#sheet').classList.add('on');$('#sheet').scrollTop=0;
+}
+function closeSheet(){updOpen=false;cf=null;if(hx){hx.ctl&&hx.ctl.abort();hx=null}if(pendingLk){pendingLk.ctl&&pendingLk.ctl.abort();pendingLk=null}$('#scrim').classList.remove('on');$('#sheet').classList.remove('on');sheetSubmit=null}
+function field(f,v){
+  const id='f_'+f.k;const full=f.full||f.type==='textarea'||f.type==='checks'?'full':'';
+  let inp;
+  if(f.type==='select')inp=`<select id="${id}">${f.options.map(o=>{const [val,lab]=Array.isArray(o)?o:[o,o];return `<option value="${esc(val)}" ${String(v??'')===String(val)?'selected':''}>${esc(lab)}</option>`}).join('')}</select>`;
+  else if(f.type==='textarea')inp=`<textarea id="${id}" placeholder="${esc(f.ph||'')}">${esc(v??'')}</textarea>`;
+  else if(f.type==='checks')inp=`<div class="checks" id="${id}">${f.options.map(([val,lab])=>`<label><input type="checkbox" value="${esc(val)}" ${(v||[]).includes(val)?'checked':''}>${esc(lab)}</label>`).join('')}</div>`;
+  else if(f.type==='bool')inp=`<select id="${id}"><option value="0" ${!v?'selected':''}>No</option><option value="1" ${v?'selected':''}>Yes</option></select>`;
+  else inp=`<input id="${id}" type="${f.type==='number'?'text':f.type||'text'}" ${f.type==='number'?'inputmode="decimal"':''} value="${esc(v??'')}" placeholder="${esc(f.ph||'')}" ${(!f.type||f.type==='text')&&f.caps?'autocapitalize="characters"':''}>`;
+  return `<div class="f ${full}"><label for="${id}">${esc(f.label)}</label>${inp}</div>`;
+}
+function readFields(fields){
+  const o={};for(const f of fields){const el=$('#f_'+f.k);if(!el)continue;
+    if(f.type==='checks')o[f.k]=[...el.querySelectorAll('input:checked')].map(i=>i.value);
+    else if(f.type==='number'){const s=el.value.replace(/[£,\s]/g,'');o[f.k]=s===''?null:(isNaN(Number(s))?null:Number(s))}
+    else if(f.type==='bool')o[f.k]=el.value==='1';
+    else o[f.k]=el.value.trim();}
+  return o;
+}
+function formSheet({title,sub,fields,values={},save='Save',onSave,del}){
+  openSheet(`<div class="sh-t">${esc(title)}</div>${sub?`<div class="sh-s">${sub}</div>`:''}<form class="form" id="sf">${fields.map(f=>field(f,values[f.k])).join('')}</form>
+   <div class="sh-actions">${del?`<button class="btn danger" data-act="sh-del" style="flex:0 0 auto;padding:0 18px">Delete</button>`:`<button class="btn ghost" data-act="close">Cancel</button>`}<button class="btn" data-act="sh-save">${esc(save)}</button></div>`,
+   ()=>{const v=readFields(fields);const res=onSave(v);if(typeof res==='string'){toast(res);return}if(res&&res.keep)return;closeSheet()});
+  sheetDel=del||null;
+}
+let sheetDel=null;
+function confirmSheet(title,msg,okLabel,fn){
+  openSheet(`<div class="sh-t">${esc(title)}</div><div class="sh-s" style="font-size:14px">${esc(msg)}</div><div class="sh-actions"><button class="btn ghost" data-act="close">Cancel</button><button class="btn danger" data-act="sh-save">${esc(okLabel)}</button></div>`,()=>{fn();closeSheet()});
+}
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),2200)}
+
+/* ---------- service history: hub, scan/paste import, quick manual entry ---------- */
+let hx=null; // {car, ctl, entries, rows}
+async function historyHub(c,afterAdd){
+  hx={car:c};
+  const scanRow=`<button class="row" data-act="hist-scan" id="hx-scan"><span class="ico">${IC.cam}</span><span class="main"><div class="t">Scan service book or invoices</div><div class="m">Take photos of the stamps or receipts and we'll read them</div></span>${IC.chev}</button>`;
+  openSheet(`<div class="sh-t">${afterAdd?'Add your service history':'Add service history'}</div>
+   <div class="sh-s">${afterAdd?esc(c.name)+' is in your garage. ':''}Add past services so the app knows when each job is next due.</div>
+   <div class="list">${scanRow}
+    <button class="row" data-act="hist-paste"><span class="ico">${IC.doc}</span><span class="main"><div class="t">Paste a digital service record</div><div class="m">From the dealer's email, app or website</div></span>${IC.chev}</button>
+    <button class="row" data-act="hist-manual"><span class="ico">${IC.wrench}</span><span class="main"><div class="t">Type them in</div><div class="m">Quick form, add several at once</div></span>${IC.chev}</button>
+   </div>
+   <div class="sh-actions"><button class="btn ghost" data-act="close">${afterAdd?'Do this later':'Close'}</button></div>`);
+  const s=await getSample();const lim=s&&await s.limits().catch(()=>null);
+  if(!lim||!lim.images){const el=$('#hx-scan');if(el)el.remove();hx.noImages=true}else hx.lim=lim.images;
+}
+function histScanSheet(){
+  const l=hx.lim||{maxCount:5,mediaTypes:['image/jpeg','image/png','image/webp']};
+  openSheet(`<div class="sh-t">Scan your history</div><div class="sh-s">Up to ${l.maxCount} photos: service book stamps, invoices or a printout of your digital service record. Make sure the dates and mileages are readable.</div>
+   <label class="drop" id="hx-drop"><input type="file" id="hx-files" accept="${esc(l.mediaTypes.join(','))}" multiple hidden><span id="hx-count">${IC.cam}<b>Choose photos</b><span class="sub">or take new ones</span></span></label>
+   <div class="sh-actions"><button class="btn ghost" data-act="history">Back</button><button class="btn" data-act="hist-read-img">Read photos</button></div>`);
+}
+function histPasteSheet(){
+  openSheet(`<div class="sh-t">Paste your service record</div><div class="sh-s">Copy the history from the dealer's email, app or the manufacturer's website and paste it below.</div>
+   <div class="f"><textarea id="hx-text" style="min-height:200px" placeholder="e.g. 12/03/2024 – 18,240 miles – Annual service – Audi Leeds…"></textarea></div>
+   <div class="sh-actions"><button class="btn ghost" data-act="history">Back</button><button class="btn" data-act="hist-read-text">Read record</button></div>`);
+}
+function histPrompt(c,text){
+  const items=c.schedule.map(i=>`- ${i.id}: ${i.task}`).join('\n')||'(none)';
+  const svs=(c.mfr&&c.mfr.services||[]).map(s=>`- ${s.id}: ${s.name} (covers: ${s.itemIds.join(', ')||'n/a'})`).join('\n')||'(none)';
+  return `Extract the service and repair history of this car from ${text?'the pasted text below':'the attached photos (service book stamps, invoices or service records)'}.
+
+CAR: ${carTitle(c)}${c.reg?' · '+c.reg:''} · current mileage ${c.mileage}
+
+The owner's tracked jobs (id: name):
+${items}
+
+The manufacturer's service types (id: name, and the job ids each covers):
+${svs}
+
+RULES
+- One entry per workshop visit (a date). Ignore anything that is not a completed visit (quotes, advisories, adverts).
+- "date": YYYY-MM-DD. If only month and year are readable, use the 1st and add "date approximate" to notes. Skip entries with no readable date.
+- "miles": whole number from the record, or null if not shown. Convert km to miles if the record is in km.
+- "title": short description, e.g. "Annual service", "Oil service", "Brake pads (front)".
+- "serviceId": the id of the matching service type above if the visit was one of them, else null.
+- "itemIds": ids of the tracked jobs that were clearly done at this visit. If it was a named service type, include the jobs that service covers. Don't guess beyond what the record shows.
+- "garage", "invoice", "cost" (total in pounds as a number, or null), "work" (short summary of parts and labour).
+- Don't invent anything that isn't in the ${text?'text':'photos'}.
+Reply with ONLY JSON: {"entries":[{"date":"","miles":null,"title":"","serviceId":null,"itemIds":[],"garage":"","invoice":"","cost":null,"work":"","notes":""}],"unreadable":"anything you couldn't read, or empty"}${text?`\n\nPASTED RECORD\n"""\n${text.slice(0,30000)}\n"""`:''}`;
+}
+function cleanEntries(d,c){
+  const ids=new Set(c.schedule.map(i=>i.id)),svs=(c.mfr&&c.mfr.services)||[];
+  const str=(v,l)=>String(v??'').slice(0,l).trim();
+  const n=v=>{const x=Number(String(v??'').replace(/[£,\s]/g,''));return v===null||v===''||!isFinite(x)?null:Math.round(x*100)/100};
+  const list=(d&&Array.isArray(d.entries)?d.entries:[]).filter(e=>e&&/^\d{4}-\d{2}-\d{2}$/.test(String(e.date))).slice(0,80).map(e=>{
+    const sv=svs.find(s=>s.id===e.serviceId);
+    let itemIds=(Array.isArray(e.itemIds)?e.itemIds:[]).map(String).filter(x=>ids.has(x));
+    if(sv)itemIds=[...new Set([...itemIds,...sv.itemIds])];
+    const miles=n(e.miles);
+    const dup=c.log.some(l=>l.date===e.date&&(miles==null||l.miles==null||Math.abs((l.miles||0)-miles)<50));
+    return {id:uid(),date:String(e.date),miles:miles!=null?Math.round(miles):null,title:str(e.title,80)||(sv?sv.name:'Service'),svc:sv?sv.id:'',taskIds:itemIds,garage:str(e.garage,80),invoice:str(e.invoice,60),cost:n(e.cost),work:str(e.work,600),notes:str(e.notes,300),dup,keep:!dup};
+  }).sort((a,b)=>a.date.localeCompare(b.date));
+  return {entries:list,unreadable:str(d&&d.unreadable,300)};
+}
+async function histExtract(opts){
+  const c=hx.car;hx.ctl=new AbortController();const me=hx;
+  openSheet(`<div class="sh-t">Reading your history</div><div class="sh-s">${esc(c.name)}</div>
+   <div class="card" style="display:flex;gap:14px;align-items:center"><div class="spin"></div><div class="note" style="margin:0">Picking out dates, mileages and the work done. This can take up to a minute.</div></div>
+   <div class="sh-actions"><button class="btn ghost" data-act="history">Cancel</button></div>`);
+  const sample=await getSample();
+  if(me!==hx)return;
+  if(!sample){histFail('Reading records needs your Anthropic API key. Add it in Settings (the gear icon, top right), or type the entries in instead.');return}
+  try{
+    const raw=await sample.json(histPrompt(c,opts.text),{signal:me.ctl.signal,images:opts.images,cache:false});
+    if(me!==hx)return;
+    const res=cleanEntries(raw,c);
+    if(!res.entries.length){histFail('No dated services could be read'+(res.unreadable?': '+res.unreadable:'.')+' Try clearer photos, or type them in.');return}
+    hx.entries=res.entries;hx.unreadable=res.unreadable;histReview();
+  }catch(e){
+    if(me!==hx||(e&&e.code==='cancelled'))return;
+    const code=e&&e.code;
+    histFail(code==='image_rejected'?'One of those photos couldn\'t be used. Try a smaller or clearer photo (JPEG or PNG).':code==='rate_limited'?'Too many requests right now. Try again in a minute.':code==='not_granted'||code==='sampling_disabled'?'Your API key was rejected. Check it in Settings (gear icon).':'That didn\'t finish. Try again, or type the entries in.');
+  }
+}
+function histFail(msg){
+  openSheet(`<div class="sh-t">Couldn't read that</div><div class="card note" style="margin:0">${esc(msg)}</div>
+   <div class="sh-actions"><button class="btn ghost" data-act="history">Back</button><button class="btn" data-act="hist-manual">Type them in</button></div>`);
+}
+function histReview(){
+  const c=hx.car;const name=id=>(c.schedule.find(s=>s.id===id)||{}).task;
+  const n=hx.entries.filter(e=>e.keep).length;
+  openSheet(`<div class="sh-t">Found ${hx.entries.length} entr${hx.entries.length===1?'y':'ies'}</div><div class="sh-s">Untick anything that's wrong. You can edit entries later from Service → History.</div>
+   <div class="list">${hx.entries.map((e,i)=>`<label class="row hrow ${e.keep?'on':''}" style="align-items:flex-start;cursor:pointer"><input type="checkbox" data-hx="${i}" ${e.keep?'checked':''} hidden><span class="tick">${e.keep?'✓':''}</span>
+     <span class="main"><div class="t" style="white-space:normal">${esc(e.title)}</div><div class="m">${fmtD(e.date)} · ${mi(e.miles)}${e.garage?' · '+esc(e.garage):''}</div>
+     ${e.taskIds.length?`<div class="m" style="white-space:normal">${esc(e.taskIds.map(name).filter(Boolean).join(', '))}</div>`:''}
+     ${e.dup?'<div class="warn">Looks like it\'s already in your history</div>':''}${e.notes?`<div class="m">${esc(e.notes)}</div>`:''}</span>
+     <span class="r">${has(e.cost)?`<b>${gbp(e.cost)}</b>`:''}</span></label>`).join('')}</div>
+   ${hx.unreadable?`<p class="note">Couldn't read: ${esc(hx.unreadable)}</p>`:''}
+   <div class="sh-actions"><button class="btn ghost" data-act="history">Back</button><button class="btn" data-act="hist-save" ${n?'':'disabled'}>Save ${n} to history</button></div>`);
+}
+function histSaveEntries(list){
+  const c=hx.car;let added=0;
+  list.forEach(e=>{const {keep,dup,id,...rest}=e;c.log.push({id:uid(),...rest});added++;
+    if(has(e.miles)&&e.miles>c.mileage){c.mileage=e.miles}
+    if(has(e.miles))c.odo.push({date:e.date,miles:e.miles})});
+  c.odo.sort((a,b)=>a.date<b.date?-1:1);
+  hx=null;closeSheet();commit(c);ui.tab='service';ui.serviceView='history';render();toast(added+' added to history');
+}
+/* quick manual entry: several rows at once */
+function histManual(){
+  const c=hx.car;if(!hx.rows)hx.rows=[{}];
+  const svs=(c.mfr&&c.mfr.services)||[];
+  const opts=[['','What was done?'],...svs.map(s=>['s:'+s.id,s.name]),...c.schedule.map(i=>['i:'+i.id,'Just: '+i.task]),['o:','Something else']];
+  openSheet(`<div class="sh-t">Type in your history</div><div class="sh-s">One card per visit. Date and mileage are what matter most.</div>
+   <div id="hm">${hx.rows.map((r,i)=>`<div class="card hm" data-i="${i}" style="margin-bottom:8px;padding:12px">
+     <div class="form" style="margin:0">
+      <div class="f"><label>Date</label><input type="date" data-f="date" value="${esc(r.date||'')}"></div>
+      <div class="f"><label>Mileage</label><input inputmode="numeric" data-f="miles" value="${esc(r.miles??'')}" placeholder="e.g. 18240"></div>
+      <div class="f full"><label>What was done</label><select data-f="sel">${opts.map(([a,b])=>`<option value="${esc(a)}" ${r.sel===a?'selected':''}>${esc(b)}</option>`).join('')}</select></div>
+      <div class="f"><label>Garage (optional)</label><input data-f="garage" value="${esc(r.garage||'')}"></div>
+      <div class="f"><label>Cost £ (optional)</label><input inputmode="decimal" data-f="cost" value="${esc(r.cost??'')}"></div>
+      <div class="f full"><label>Notes (optional)</label><input data-f="title" value="${esc(r.title||'')}" placeholder="e.g. Also replaced front pads"></div>
+     </div>${hx.rows.length>1?`<button class="link" data-act="hm-del" data-i="${i}" style="margin-top:10px">Remove</button>`:''}</div>`).join('')}</div>
+   <button class="btn ghost block" data-act="hm-add">${IC.plus} Add another visit</button>
+   <div class="sh-actions"><button class="btn ghost" data-act="history">Back</button><button class="btn" data-act="hm-save">Save to history</button></div>`);
+}
+function hmRead(){
+  document.querySelectorAll('#hm .hm').forEach(card=>{const r=hx.rows[+card.dataset.i];card.querySelectorAll('[data-f]').forEach(el=>{r[el.dataset.f]=el.value.trim()})});
+}
+function hmSave(){
+  hmRead();const c=hx.car;const svs=(c.mfr&&c.mfr.services)||[];
+  const num=s=>{const x=Number(String(s||'').replace(/[£,\s]/g,''));return s===''||s==null||!isFinite(x)?null:x};
+  const out=[];
+  for(const [i,r] of hx.rows.entries()){
+    const empty=!r.date&&!r.miles&&!r.sel&&!r.title;if(empty)continue;
+    if(!r.date){toast('Visit '+(i+1)+': add the date');return}
+    if(!r.sel&&!r.title){toast('Visit '+(i+1)+': choose what was done');return}
+    let taskIds=[],title=r.title||'',svc='';
+    if(r.sel.startsWith('s:')){const s=svs.find(x=>x.id===r.sel.slice(2));if(s){taskIds=[...s.itemIds];svc=s.id;title=s.name+(r.title?' – '+r.title:'')}}
+    else if(r.sel.startsWith('i:')){const it=c.schedule.find(x=>x.id===r.sel.slice(2));if(it){taskIds=[it.id];title=it.task+(r.title?' – '+r.title:'')}}
+    const miles=num(r.miles);
+    out.push({date:r.date,miles:miles!=null?Math.round(miles):null,title,svc,taskIds,garage:r.garage||'',cost:num(r.cost),invoice:'',work:'',notes:''});
+  }
+  if(!out.length){toast('Add at least one visit');return}
+  histSaveEntries(out);
+}
+
+/* ---------- actions ---------- */
+const SPEC_KEYS=['make','model','variant','variantDetail','year','fuel','engineSize','gearbox','drivetrain','usage'];
+const BRANDS={
+'Abarth':['500','595','695','124 Spider','500e','600e'],
+'Alfa Romeo':['Giulietta','Giulia','Stelvio','Tonale','Junior','MiTo','159','Brera'],
+'Aston Martin':['Vantage','DB11','DB12','DBS','DBX','Vanquish','Rapide'],
+'Audi':['A1','A3','A4','A5','A6','A7','A8','Q2','Q3','Q4 e-tron','Q5','Q6 e-tron','Q7','Q8','e-tron','Q8 e-tron','e-tron GT','A6 e-tron','TT','R8','S1','S3','S4','S5','S6','SQ5','RS3','RS4','RS5','RS6','RS Q3','RS Q8'],
+'BMW':['1 Series','2 Series','2 Series Active Tourer','2 Series Gran Coupe','3 Series','4 Series','5 Series','6 Series','7 Series','8 Series','X1','X2','X3','X4','X5','X6','X7','Z4','i3','i4','i5','i7','iX','iX1','iX2','iX3','M2','M3','M4','M5','XM'],
+'BYD':['Dolphin','Atto 2','Atto 3','Seal','Seal U','Sealion 7'],
+'Citroen':['C1','C3','e-C3','C3 Aircross','C4','C4 X','C5 Aircross','C5 X','Berlingo','Grand C4 Picasso','Ami'],
+'Cupra':['Born','Formentor','Leon','Ateca','Tavascan','Terramar'],
+'Dacia':['Sandero','Sandero Stepway','Duster','Jogger','Spring','Bigster','Logan'],
+'DS':['DS 3','DS 4','DS 7','DS 9'],
+'Fiat':['500','500e','500X','500L','600','Panda','Grande Panda','Tipo','Punto','Doblo'],
+'Ford':['Fiesta','Focus','Puma','Kuga','Mustang','Mustang Mach-E','Explorer','Capri','EcoSport','Galaxy','S-MAX','Mondeo','B-MAX','C-MAX','Ka','Edge','Ranger','Transit Custom','Transit Connect','Transit','Tourneo Connect','Tourneo Custom'],
+'Genesis':['G70','G80','GV60','GV70','GV80'],
+'Honda':['Jazz','Civic','HR-V','ZR-V','CR-V','e','e:Ny1','Accord'],
+'Hyundai':['i10','i20','i30','i30 N','Bayon','Kona','Tucson','Santa Fe','IONIQ','IONIQ 5','IONIQ 6','Inster','ix35'],
+'Jaguar':['XE','XF','XJ','F-Type','E-Pace','F-Pace','I-Pace'],
+'Jeep':['Avenger','Renegade','Compass','Wrangler','Grand Cherokee'],
+'Kia':['Picanto','Rio','Ceed','ProCeed','XCeed','Stonic','Niro','Sportage','Sorento','EV3','EV6','EV9','Soul','Optima'],
+'Land Rover':['Defender','Discovery','Discovery Sport','Range Rover','Range Rover Sport','Range Rover Velar','Range Rover Evoque','Freelander'],
+'Lexus':['LBX','CT','UX','NX','RX','RZ','ES','IS','LC','LS'],
+'Lotus':['Elise','Exige','Evora','Emira','Eletre'],
+'Maserati':['Ghibli','Levante','Quattroporte','Grecale','MC20','GranTurismo'],
+'Mazda':['Mazda2','Mazda3','Mazda6','CX-3','CX-30','CX-5','CX-60','CX-80','MX-5','MX-30'],
+'Mercedes-Benz':['A-Class','B-Class','C-Class','E-Class','S-Class','CLA','CLS','GLA','GLB','GLC','GLE','GLS','G-Class','SL','SLK','SLC','CLK','AMG GT','EQA','EQB','EQC','EQE','EQS','V-Class','Vito','Sprinter'],
+'MG':['MG3','MG4','MG5','ZS','MG ZS EV','HS','MG S5','Cyberster'],
+'MINI':['Hatch','Convertible','Clubman','Countryman','Aceman','Electric','Paceman','Coupe','Roadster'],
+'Mitsubishi':['Mirage','ASX','Eclipse Cross','Outlander','L200','Shogun'],
+'Nissan':['Micra','Note','Juke','Qashqai','X-Trail','Leaf','Ariya','Pulsar','Navara','370Z','GT-R'],
+'Peugeot':['108','208','e-208','308','408','508','2008','e-2008','3008','5008','Rifter','Partner'],
+'Polestar':['2','3','4'],
+'Porsche':['911','718 Boxster','718 Cayman','Macan','Cayenne','Panamera','Taycan'],
+'Renault':['Twingo','Clio','Captur','Megane','Megane E-Tech','Kadjar','Arkana','Austral','Symbioz','Scenic','Zoe','5','Kangoo','Trafic'],
+'SEAT':['Mii','Ibiza','Leon','Arona','Ateca','Tarraco','Alhambra'],
+'Skoda':['Citigo','Fabia','Scala','Octavia','Superb','Kamiq','Karoq','Kodiaq','Enyaq','Elroq','Rapid','Yeti'],
+'Smart':['fortwo','forfour','#1','#3'],
+'SsangYong / KGM':['Tivoli','Korando','Torres','Rexton','Musso'],
+'Subaru':['Impreza','XV','Crosstrek','Forester','Outback','Levorg','BRZ','Solterra'],
+'Suzuki':['Celerio','Ignis','Swift','Vitara','S-Cross','Jimny','Swace','Across'],
+'Tesla':['Model 3','Model Y','Model S','Model X'],
+'Toyota':['Aygo','Aygo X','Yaris','Yaris Cross','GR Yaris','Corolla','Auris','C-HR','RAV4','Prius','Camry','Avensis','Highlander','Land Cruiser','Hilux','bZ4X','GR86','Supra','Proace'],
+'Vauxhall':['Viva','Adam','Corsa','Astra','Mokka','Crossland','Frontera','Grandland','Insignia','Zafira','Meriva','Combo','Vivaro'],
+'Volkswagen':['up!','Polo','Golf','Golf GTI','Golf R','T-Cross','Taigo','T-Roc','Tiguan','Touareg','Passat','Arteon','ID.3','ID.4','ID.5','ID.7','ID. Buzz','Touran','Sharan','Scirocco','Beetle','Caddy','Transporter','Amarok'],
+'Volvo':['EX30','XC40','EC40','C40','XC60','XC90','EX90','V40','V60','V90','S60','S90'],
+};
+const COLOURS=['Black','White','Silver','Grey','Blue','Red','Green','Yellow','Orange','Brown','Beige','Purple','Gold'];
+const YEARS=(()=>{const y=new Date().getFullYear()+1,a=[];for(let i=y;i>=1990;i--)a.push(i);return a})();
+const SPEC_FIELDS=[['body','Body type',BODY],['fuel','Fuel type',FUEL],['engineSize','Engine size',null],['gearbox','Gearbox type',GEARBOX],['drivetrain','Drivetrain',DRIVE]];
+const LOCK='<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+
+/* map free text from the lookup onto our fixed option lists */
+function matchOpt(x,k){
+  const s=String(x||'').toLowerCase();if(!s)return null;
+  const list={body:BODY,fuel:FUEL,gearbox:GEARBOX,drivetrain:DRIVE}[k];
+  const exact=list.find(a=>a.toLowerCase()===s);if(exact)return exact;
+  const rules={
+    fuel:[[/plug|phev/,'Plug-in hybrid (PHEV)'],[/mild|mhev|48v/,'Mild hybrid (MHEV)'],[/hybrid|hev/,'Hybrid (HEV)'],[/electric|\bev\b|bev/,'Electric (EV)'],[/diesel/,'Diesel'],[/lpg/,'LPG'],[/petrol|gasoline/,'Petrol']],
+    gearbox:[[/dsg|dual|s.?tronic|pdk|dct|edc|twin.?clutch/,'Dual-clutch (DSG / S tronic / PDK etc.)'],[/cvt|e-cvt|multidrive|xtronic/,'CVT'],[/single|reduction|ev\b/,'Single-speed (EV)'],[/manual/,'Manual'],[/auto|tiptronic|steptronic|torque|8g|9g|zf/,'Automatic (torque converter)']],
+    drivetrain:[[/all|awd|4x4|4wd|quattro|xdrive|4motion|4matic|4x4|dual.?motor|e-four/,'All-wheel drive / 4x4'],[/rear|rwd/,'Rear-wheel drive'],[/front|fwd/,'Front-wheel drive']],
+    body:[[/hatch|sportback|liftback/,'Hatchback'],[/saloon|sedan/,'Saloon'],[/estate|avant|touring|wagon|tourer|sportswagen|combi|shooting/,'Estate'],[/suv|crossover|4x4/,'SUV'],[/coupe|coupé/,'Coupe'],[/convertible|cabrio|roadster|spider|spyder/,'Convertible'],[/mpv|people/,'MPV'],[/pick/,'Pickup'],[/van/,'Van']],
+  }[k];
+  for(const [re,v] of rules)if(re.test(s))return v;
+  return null;
+}
+function cleanVariants(d){
+  const str=(v,l)=>String(v??'').slice(0,l).trim();
+  const arr=(v,k)=>[...new Set((Array.isArray(v)?v:[v]).map(x=>matchOpt(x,k)).filter(Boolean))];
+  const variants=(d&&Array.isArray(d.variants)?d.variants:[]).filter(v=>v&&v.name).slice(0,40).map(v=>({
+    name:str(v.name,60),detail:str(v.detail,80),fuel:arr(v.fuel,'fuel'),engineSize:str(v.engineSize,20),
+    gearbox:arr(v.gearbox,'gearbox'),drivetrain:arr(v.drivetrain,'drivetrain'),body:arr(v.body,'body')}));
+  return {generation:str(d&&d.generation,80),note:str(d&&d.note,200),trims:(d&&Array.isArray(d.trims)?d.trims:[]).slice(0,20).map(t=>str(t,40)).filter(Boolean),variants};
+}
+function variantPrompt(make,model,year){
+  return `List every engine / powertrain derivative of the ${year} ${make} ${model} that was sold new in the UK in model year ${year}.
+
+Use the derivative names UK owners and dealers use (e.g. "30 TFSI", "1.0 EcoBoost 125", "320d", "Long Range AWD", "1.5 TSI Evo 150"). One entry per derivative; do not list trim levels as derivatives.
+For each derivative give, for THAT derivative in that model year:
+- "detail": engine and power, e.g. "1.0 TFSI 3-cyl · 116 PS"
+- "fuel": one of ${JSON.stringify(FUEL)}
+- "engineSize": like "1.0L" or "2.0L" ("Electric" for EVs)
+- "gearbox": array of the gearboxes it was offered with, each one of ${JSON.stringify(GEARBOX)}
+- "drivetrain": array, each one of ${JSON.stringify(DRIVE)}
+- "body": array of body styles this model came in that year, each one of ${JSON.stringify(BODY)}
+Also give "trims" (UK trim levels that year) and "generation" (e.g. "A1 Sportback (GB) 2018–present").
+Only include options you are confident were offered; if unsure of a value, give the single most likely one. If this model was not sold in the UK in ${year}, return an empty variants array and say so in "note".
+Reply with ONLY JSON: {"generation":"","trims":[],"note":"","variants":[{"name":"","detail":"","fuel":"","engineSize":"","gearbox":[],"drivetrain":[],"body":[]}]}`;
+}
+
+/* ---------- car form ---------- */
+let cf=null;
+function carForm(existing){
+  const v=existing?clone(existing):{usage:'normal'};
+  cf={edit:existing||null,v,variants:null,vStatus:'idle',unlocked:{},
+    makeOther:!!(v.make&&!BRANDS[v.make]),modelOther:!!(v.model&&BRANDS[v.make]&&!BRANDS[v.make].includes(v.model)),variantOther:false};
+  openSheet(`<div class="sh-t">${existing?'Vehicle details':'Add your car'}</div><div class="sh-s">${existing?'Change your car\'s details.':'Pick your car and we\'ll fill in the rest, then find its manufacturer service schedule.'}</div>
+   <div class="form" id="cf"></div>
+   <div class="sh-actions">${existing?'<button class="btn ghost" data-act="close">Cancel</button>':''}<button class="btn" data-act="cf-save">${existing?'Save':'Next: find schedule'}</button></div>`);
+  renderCF();
+  if(v.make&&v.model&&v.year)loadVariants();
+}
+const cfVariant=()=>cf&&cf.variants&&!cf.variantOther?cf.variants.variants.find(x=>x.name===cf.v.variant):null;
+function cfSel(k,label,opts,val,{full,disabled,ph}={}){
+  return `<div class="f ${full?'full':''}"><label>${esc(label)}</label><select data-k="${k}" ${disabled?'disabled':''}>${ph?`<option value="">${esc(ph)}</option>`:''}${opts.map(o=>{const [a,b]=Array.isArray(o)?o:[o,o];return `<option value="${esc(a)}" ${String(val??'')===String(a)?'selected':''}>${esc(b)}</option>`}).join('')}</select></div>`;
+}
+function cfTxt(k,label,val,{full,ph,num,caps,type}={}){
+  return `<div class="f ${full?'full':''}"><label>${esc(label)}</label><input data-k="${k}" type="${type||'text'}" ${num?'inputmode="numeric"':''} ${caps?'autocapitalize="characters"':''} value="${esc(val??'')}" placeholder="${esc(ph||'')}"></div>`;
+}
+function renderCF(){
+  const el=$('#cf');if(!el||!cf)return;const v=cf.v;
+  const models=BRANDS[v.make]||[];
+  let h='';
+  // brand
+  h+=cfSel('make','Brand',[...Object.keys(BRANDS),['__other','Other brand…']],cf.makeOther?'__other':v.make,{ph:'Choose brand'});
+  // model
+  if(cf.makeOther)h+=cfTxt('make_t','Brand name',v.make,{ph:'Type the brand'});
+  if(cf.makeOther||cf.modelOther)h+=(cf.makeOther?'':cfSel('model','Model',[...models,['__other','Other model…']],'__other'))+cfTxt('model_t','Model name',v.model,{ph:'Type the model',full:cf.makeOther});
+  else h+=cfSel('model','Model',[...models,['__other','Other model…']],v.model,{ph:v.make?'Choose model':'Choose brand first',disabled:!v.make});
+  // year
+  h+=cfSel('year','Year',YEARS,v.year,{ph:'Choose year',full:!(cf.makeOther||cf.modelOther)?false:false});
+  // variant
+  const ready=v.make&&v.model&&v.year;
+  if(!ready)h+=cfSel('variant','Variant',[],'',{ph:'Choose brand, model and year first',disabled:true});
+  else if(cf.vStatus==='loading')h+=`<div class="f"><label>Variant</label><div class="lockbox"><span class="spin sm"></span>Finding variants…</div></div>`;
+  else if(cf.vStatus==='done'&&!cf.variantOther){
+    h+=cfSel('variant','Variant',[...cf.variants.variants.map(x=>[x.name,x.name+(x.detail?' · '+x.detail.split('·').pop().trim():'')]),['__other','Not listed, type it']],v.variant,{ph:'Choose variant'});
+  }else h+=cfTxt('variant_t','Variant',v.variant,{ph:'e.g. 30 TFSI, 320d'});
+  const vInfo=cf.vStatus==='error'?`Couldn't load variants. <button class="link" data-act="cf-retry">Try again</button>`:
+    cf.vStatus==='unavailable'?'The variant list needs your Anthropic API key (Settings, gear icon top right). Type the variant for now.':
+    cf.vStatus==='none'?esc(cf.variants.note||'No UK variants found for that year. Check the year or type the variant.'):
+    cf.vStatus==='done'?esc(cf.variants.generation||'')+(cf.variantOther?` · <button class="link" data-act="cf-list">Pick from list</button>`:''):'';
+  if(vInfo)h+=`<div class="f full" style="margin-top:-6px"><div class="note" style="margin:0">${vInfo}</div></div>`;
+  // trim
+  const vo=cfVariant();
+  if(cf.vStatus==='done'&&cf.variants.trims.length)h+=cfSel('trim','Trim (optional)',[...cf.variants.trims,...(v.trim&&!cf.variants.trims.includes(v.trim)?[v.trim]:[])],v.trim,{ph:'Choose trim'});
+  else h+=cfTxt('trim','Trim (optional)',v.trim,{ph:'e.g. S line'});
+  // spec fields, driven by variant
+  for(const [k,label,list] of SPEC_FIELDS){
+    let opts=list;
+    if(vo&&!cf.unlocked[k]){
+      const vals=k==='engineSize'?(vo.engineSize?[vo.engineSize]:[]):vo[k];
+      if(vals&&vals.length===1){v[k]=vals[0];h+=`<div class="f"><label style="display:flex;justify-content:space-between;align-items:center">${label}<button class="link" data-act="cf-unlock" data-k="${k}" style="font-size:12px">Change</button></label><div class="lockbox locked">${LOCK}<span>${esc(vals[0])}</span></div></div>`;continue}
+      if(vals&&vals.length>1){opts=vals;if(!vals.includes(v[k]))v[k]=''}
+    }
+    if(k==='engineSize')h+=cfTxt('engineSize',label,v.engineSize,{ph:'e.g. 1.0L'});
+    else h+=cfSel(k,label,k==='gearbox'?opts.map(o=>[o,o.replace(' / S tronic / PDK etc.','').replace(' (torque converter)','')]):opts,v[k],{ph:opts===list?'Choose':'Choose one'});
+  }
+  h+=cfTxt('reg','Registration',v.reg,{ph:'AB23 CDE',caps:1});
+  if(!cf.edit)h+=cfTxt('mileage','Mileage',v.mileage,{ph:'e.g. 32000',num:1});
+  h+=cfSel('colour','Colour',[...COLOURS,...(v.colour&&!COLOURS.includes(v.colour)?[v.colour]:[])],v.colour,{ph:'Choose colour'});
+  h+=cfSel('usage','How it\'s driven',USAGE,v.usage||'normal');
+  h+=cfTxt('name','Nickname (optional)',v.name&&cf.edit?v.name:'',{ph:'Shown in your garage'});
+  h+=cfTxt('firstReg','First registered (optional)',v.firstReg,{type:'date'});
+  h+=cfTxt('vin','VIN (optional)',v.vin,{full:1,caps:1});
+  el.innerHTML=h;
+}
+async function loadVariants(){
+  const {make,model,year}=cf.v;if(!make||!model||!year)return;
+  const me=cf,key=[make,model,year].join('|').toLowerCase();
+  const stale=()=>cf!==me||[cf.v.make,cf.v.model,cf.v.year].join('|').toLowerCase()!==key;
+  cf.vStatus='loading';cf.variants=null;renderCF();
+  let data=null;try{const s=localStorage.getItem('oh-var:'+key);if(s)data=JSON.parse(s)}catch(e){}
+  if(!data){
+    const sample=await getSample();if(stale())return;
+    if(!sample){cf.vStatus='unavailable';renderCF();return}
+    try{data=cleanVariants(await sample.json(variantPrompt(make,model,year),{cache:{gcTime:864e5}}));
+      if(data.variants.length)try{localStorage.setItem('oh-var:'+key,JSON.stringify(data))}catch(e){}}
+    catch(e){if(stale())return;cf.vStatus=(e&&(e.code==='not_granted'||e.code==='sampling_disabled'))?'unavailable':'error';renderCF();return}
+  }
+  if(stale())return;
+  cf.variants=data;cf.vStatus=data.variants.length?'done':'none';
+  cf.variantOther=!!(cf.v.variant&&!data.variants.some(x=>x.name===cf.v.variant));
+  renderCF();
+}
+function cfChange(t){
+  const k=t.dataset.k,val=t.value,v=cf.v;
+  const resetFrom=lvl=>{if(lvl<=1){v.model='';cf.modelOther=false}if(lvl<=2){v.variant='';v.variantDetail='';v.trim='';cf.variants=null;cf.vStatus='idle';cf.variantOther=false;cf.unlocked={}}};
+  switch(k){
+    case 'make':if(val==='__other'){cf.makeOther=true;v.make=''}else{cf.makeOther=false;v.make=val}resetFrom(1);renderCF();break;
+    case 'make_t':v.make=val.trim();resetFrom(1);cf.modelOther=true;renderCF();break;
+    case 'model':if(val==='__other'){cf.modelOther=true;v.model=''}else{cf.modelOther=false;v.model=val}resetFrom(2);renderCF();loadVariants();break;
+    case 'model_t':v.model=val.trim();resetFrom(2);renderCF();loadVariants();break;
+    case 'year':v.year=val?Number(val):'';resetFrom(2);renderCF();loadVariants();break;
+    case 'variant':if(val==='__other'){cf.variantOther=true;v.variant='';v.variantDetail=''}else{v.variant=val;const vo=cfVariant();v.variantDetail=vo?vo.detail:''}cf.unlocked={};renderCF();break;
+    case 'variant_t':v.variant=val.trim();v.variantDetail='';break;
+    case 'mileage':{const n=Number(val.replace(/[,\s]/g,''));v.mileage=val.trim()===''||isNaN(n)?'':n;break}
+    case 'reg':case 'vin':v[k]=val.toUpperCase().trim();break;
+    default:v[k]=val;
+  }
+}
+function cfSave(){
+  if(!cf)return;
+  document.querySelectorAll('#cf input[data-k]').forEach(i=>cfChange(i));
+  const v=cf.v;
+  const err=!v.make?'Choose the brand':!v.model?'Choose the model':!v.year?'Choose the year':(!cf.edit&&!has(v.mileage))?'Add the mileage':!v.fuel?'Choose the fuel type':null;
+  if(err){toast(err);return}
+  const fields={make:v.make,model:v.model,year:v.year,variant:v.variant||'',variantDetail:v.variantDetail||'',trim:v.trim||'',body:v.body||'',fuel:v.fuel,engineSize:v.engineSize||'',gearbox:v.gearbox||'',drivetrain:v.drivetrain||'',reg:(v.reg||'').toUpperCase(),colour:v.colour||'',usage:v.usage||'normal',firstReg:v.firstReg||'',vin:v.vin||''};
+  const nick=(v.name||'').trim();
+  if(cf.edit){
+    const c=cf.edit;const before=SPEC_KEYS.map(k=>c[k]).join('|');
+    Object.assign(c,fields,{name:nick||[v.make,v.model].join(' ')});cf=null;commit(c);
+    if(before!==SPEC_KEYS.map(k=>c[k]).join('|')&&(!c.mfr||c.mfr.source!=='pasted')){
+      openSheet(`<div class="sh-t">Update the schedule?</div><div class="sh-s" style="font-size:14px">You changed details that can affect the service schedule. Look it up again for ${esc(carTitle(c))}? Your service history is kept.</div><div class="sh-actions"><button class="btn ghost" data-act="close">Not now</button><button class="btn" data-act="lookup">Look up again</button></div>`);
+    }else closeSheet();
+    return;
+  }
+  const c=normalize({id:uid(),...fields,name:nick||[v.make,v.model].join(' '),mileage:v.mileage,odo:[{date:todayISO(),miles:v.mileage}],schedule:[],admin:stdAdmin(),finance:{}});
+  cf=null;lookupFlow(c,true);
+}
+function addCarSheet(){carForm(null)}
+function editCarSheet(c){carForm(c)}
+
+/* ---------- manufacturer schedule lookup ---------- */
+let pendingLk=null;
+/* ---------- desktop AI bridge (Anthropic API via the app's main process) ---------- */
+async function shrinkImage(blob){
+  try{const bmp=await createImageBitmap(blob);const max=1568,sc=Math.min(1,max/Math.max(bmp.width,bmp.height));
+    const cv=document.createElement('canvas');cv.width=Math.round(bmp.width*sc);cv.height=Math.round(bmp.height*sc);
+    cv.getContext('2d').drawImage(bmp,0,0,cv.width,cv.height);return cv.toDataURL('image/jpeg',0.85).split(',')[1]}
+  catch(e){throw{code:'image_rejected'}}
+}
+function parseJSONReply(text){
+  const t=String(text||'').trim();
+  const tries=[t,(t.match(/```(?:json)?\s*([\s\S]*?)```/)||[])[1],(()=>{const a=t.search(/[\[{]/),b=Math.max(t.lastIndexOf('}'),t.lastIndexOf(']'));return a>=0&&b>a?t.slice(a,b+1):null})()];
+  for(const x of tries){if(!x)continue;try{return JSON.parse(x)}catch(e){}}
+  throw{code:'invalid_json',text:t};
+}
+async function getSample(){
+  const api=window.ohDesktop;if(!api)return null;
+  let ok=false;try{ok=await api.hasKey()}catch(e){}
+  if(!ok)return null;
+  const call=async(input,opts={})=>{
+    const content=[];
+    if(opts.images){for(const b of Array.from(opts.images).slice(0,5))content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:await shrinkImage(b)}})}
+    content.push({type:'text',text:input});
+    const p=api.ask({content});
+    const r=await (opts.signal?Promise.race([p,new Promise((_,rej)=>{if(opts.signal.aborted)rej({code:'cancelled'});opts.signal.addEventListener('abort',()=>rej({code:'cancelled'}))})]):p);
+    if(r&&r.error)throw{code:r.error,message:r.message||''};
+    return{text:r.text,truncated:!!r.truncated};
+  };
+  call.json=async(input,opts)=>{const r=await call(input+'\n\nReply with only the JSON value, no other text.',opts);if(r.truncated)throw{code:'invalid_json'};return parseJSONReply(r.text)};
+  call.limits=async()=>({maxPromptBytes:262144,images:{maxCount:5,maxInputBytes:3e7,mediaTypes:['image/jpeg','image/png','image/webp','image/gif','image/heic']}});
+  return call;
+}
+/* ---------- in-app updates ---------- */
+let upd={state:'idle'},updOpen=false,appVersion='';
+function drawUpd(){
+  const b=$('#updbtn');if(b){const show=['available','downloading','ready'].includes(upd.state);b.hidden=!show;b.textContent=upd.state==='ready'?'Restart':upd.state==='downloading'?(upd.percent||0)+'%':'Update'}
+  const l=$('#upd-line');if(l)l.textContent=updLine();
+  if(updOpen)updSheet();
+  if(ui.tab==='garage')render();
+  const sy=$('#sync');if(sy)sy.style.display=b&&!b.hidden?'none':'';
+}
+function updLine(){return({checking:'Checking for updates…',none:'You\'re on the latest version.',available:'Version '+(upd.version||'')+' is available.',downloading:'Downloading update… '+(upd.percent||0)+'%',ready:'Update downloaded — restart to finish.',error:'Couldn\'t check for updates right now. Check your internet and try again.',dev:'Updates work in the installed app (not the "run without installing" version).'})[upd.state]||''}
+function updSheet(){
+  updOpen=true;const s=upd.state;
+  const notes=upd.notes?`<div class="eyebrow" style="margin-top:4px">What's new</div><div class="card note" style="margin:0;white-space:pre-wrap">${esc(upd.notes)}</div>`:'';
+  const bar=s==='downloading'?`<div class="bar" style="height:7px;margin-top:16px"><i style="width:${upd.percent||0}%;background:var(--ok)"></i></div><div class="note">Downloading… ${upd.percent||0}%</div>`:'';
+  const act=s==='available'?'<button class="btn" data-act="update-download">Download & install</button>':s==='ready'?'<button class="btn" data-act="update-install">Restart now</button>':s==='error'?'<button class="btn" data-act="update-check">Try again</button>':'';
+  openSheet(`<div class="sh-t">${s==='ready'?'Ready to update':'Update available'}</div><div class="sh-s">${appVersion?'You have v'+esc(appVersion):''}${upd.version?' → v'+esc(upd.version):''}</div>${notes}${bar}
+   ${s==='ready'?'<p class="note">The app will close, update and reopen. Your cars and history are kept.</p>':''}${s==='error'?`<p class="note">${esc(updLine())}</p>`:''}
+   <div class="sh-actions"><button class="btn ghost" data-act="close">${s==='downloading'?'Hide':'Later'}</button>${act}</div>`);
+}
+async function initUpdates(){
+  const u=window.ohDesktop&&window.ohDesktop.update;if(!u)return;
+  try{appVersion=await window.ohDesktop.version()}catch(e){}
+  u.onStatus(s=>{upd=s||{state:'idle'};drawUpd()});
+  try{upd=await u.last()||upd}catch(e){}
+  drawUpd();
+}
+async function settingsSheet(){
+  const api=window.ohDesktop;let has=false;try{has=api&&await api.hasKey()}catch(e){}
+  openSheet(`<div class="sh-t">Settings</div><div class="sh-s">Your cars and history are saved on this PC.</div>
+   <div class="eyebrow" style="margin-top:6px">Smart features</div>
+   <div class="card note" style="margin:0 0 10px">The variant list, manufacturer schedule lookup and service-book scanning use Claude through your own Anthropic API key. Each lookup costs a few pence on your Anthropic account. Get a key at <a class="link" href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a>. It's stored encrypted on this PC.</div>
+   <div class="f"><label for="apikey">Anthropic API key ${has?'<span class="pill st-ok" style="margin-left:6px">Saved</span>':''}</label><input id="apikey" type="password" autocomplete="off" placeholder="${has?'•••••••• (saved — paste a new one to replace)':'sk-ant-…'}"></div>
+   <div class="sh-actions">${has?'<button class="btn danger" data-act="key-del" style="flex:0 0 auto;padding:0 16px">Remove key</button>':'<button class="btn ghost" data-act="close">Close</button>'}<button class="btn" data-act="key-save">Save key</button></div>
+   <div class="eyebrow">App updates</div>
+   <div class="card" style="display:flex;align-items:center;gap:12px"><div style="flex:1"><div style="font-weight:600">The Owners Hub ${appVersion?'v'+esc(appVersion):''}</div><div class="note" style="margin-top:2px" id="upd-line">${esc(updLine())}</div></div><button class="btn ghost sm" data-act="${['available','ready'].includes(upd.state)?'update-open':'update-check'}">${['available','ready'].includes(upd.state)?'Update':'Check now'}</button></div>
+   <div class="eyebrow">Reminders</div>
+   <div class="card note" style="margin:0">When you open the app, Windows will notify you about anything overdue or due soon (once a day).</div>
+   <div class="eyebrow">Moving from the web version?</div>
+   <div class="card note" style="margin:0">In the web version, go to My Car → Export backup, then here go to My Car → Restore from backup.</div>`);
+}
+function dailyNotify(){
+  try{
+    const today=todayISO();if(localStorage.getItem('oh-notified')===today||!state.cars.length||!('Notification' in window))return;
+    const all=state.cars.flatMap(remindersFor);const over=all.filter(r=>r.state==='over'),soon=all.filter(r=>r.state==='soon');
+    if(!over.length&&!soon.length)return;
+    const top=[...over,...soon].slice(0,3).map(r=>(state.cars.length>1?r.car.name+': ':'')+r.title).join(', ');
+    const n=new Notification('The Owners Hub',{body:[over.length?over.length+' overdue':'',soon.length?soon.length+' due soon':''].filter(Boolean).join(' · ')+'\n'+top});
+    n.onclick=()=>{ui.tab='reminders';render()};
+    localStorage.setItem('oh-notified',today);
+  }catch(e){}
+}
+function buildPrompt(c,pasted){
+  const spec=[['Brand',c.make],['Model',c.model],['Variant',c.variant],['Variant detail',c.variantDetail],['Trim',c.trim],['Year',c.year],['Body type',c.body],['Fuel',c.fuel],['Engine size',c.engineSize],['Gearbox',c.gearbox],['Drivetrain',c.drivetrain],['Current mileage',c.mileage],['Driving conditions',c.usage==='severe'?'Severe (short trips, towing, track or dusty roads)':'Normal'],['Market','United Kingdom (use miles)']].filter(x=>has(x[1])).map(x=>x[0]+': '+x[1]).join('\n');
+  const shape=`{"regime":"short name of the servicing system, e.g. 'Fixed annual servicing' or 'Variable (LongLife) / fixed option'",
+"summary":"2-3 plain-English sentences on how this manufacturer services this car in the UK",
+"confidence":"high|medium|low",
+"services":[{"name":"e.g. Oil Service / Interim / Full / Major / Inspection","everyMiles":10000,"everyMonths":12,"includes":["Replace engine oil and filter","Check brake pads and discs", "..."],"itemKeys":["oil"]}],
+"items":[{"key":"oil","task":"Engine oil + filter","everyMiles":10000,"everyMonths":12,"note":"oil spec or caveat"}],
+"notes":["timing belt vs chain, severe-use advice, warranty conditions etc."],
+"sources":[{"title":"e.g. Ford UK - Service schedules","url":"https://..."}]}`;
+  const base=`You help UK car owners set up a maintenance tracker.\n\nVEHICLE\n${spec}\n\n`;
+  const rules=`RULES
+- "items" are individual jobs with their own interval, used to work out when each is next due. Include every one that applies to this vehicle: engine oil and filter, inspection, brake fluid, coolant, cabin/pollen filter, engine air filter, spark plugs (petrol), fuel filter (diesel), timing belt and water pump (only if belt-driven; if chain, say so in notes), auxiliary belt, gearbox/DSG/CVT fluid, AWD coupling/Haldex/transfer case and diff oils where applicable, AdBlue or DPF items only if they have a set interval. Electric vehicles: no engine oil, plugs or filters; include coolant, brake fluid, cabin filter, inspection.
+- Give everyMiles and/or everyMonths as whole numbers (null when it doesn't apply). The owner should do the job at whichever comes first.
+- "services" are the service visits the owner books, each with the list of what's done ("includes", 5-15 short items) and "itemKeys" naming which items it covers.
+- Severe driving conditions: use the manufacturer's severe-service intervals if it publishes them.
+- Lower "confidence" when unsure of the exact variant's intervals, and say what to check in the item note. Never invent precision.
+- "sources": up to 4 official manufacturer owner/service pages or handbook sections the owner can check. Only give a URL if you are confident it is a real, current manufacturer page; otherwise leave url as "".
+- Reply with ONLY the JSON object, no other text.
+
+JSON SHAPE
+${shape}`;
+  if(pasted)return base+`The owner pasted this servicing information from their handbook or the manufacturer's website. Build the schedule ONLY from what it says (you may fill in task names and group items sensibly, but do not add intervals it doesn't state). Set confidence "high" if it is clear. Leave sources empty.\n\nPASTED TEXT\n"""\n${pasted.slice(0,20000)}\n"""\n\n`+rules;
+  return base+`Using the manufacturer's official published UK servicing schedule for this vehicle, produce its maintenance plan. If the manufacturer uses variable or condition-based servicing (e.g. LongLife, CBS, ASSYST), base the intervals on the fixed schedule it recommends for UK drivers and explain the system in the summary.\n\n`+rules;
+}
+function cleanPlan(d){
+  if(!d||typeof d!=='object')return null;
+  const n=v=>{const x=Number(v);return isFinite(x)&&x>0?Math.round(x):null};
+  const str=(v,l)=>String(v??'').slice(0,l).trim();
+  const keyOf=v=>str(v,60).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  const items=(Array.isArray(d.items)?d.items:[]).filter(i=>i&&i.task).slice(0,30).map(i=>({key:keyOf(i.key||i.task),task:str(i.task,80),miles:n(i.everyMiles),months:n(i.everyMonths),note:str(i.note,400)})).filter(i=>i.miles||i.months);
+  const services=(Array.isArray(d.services)?d.services:[]).filter(x=>x&&x.name).slice(0,10).map(x=>({name:str(x.name,60),everyMiles:n(x.everyMiles),everyMonths:n(x.everyMonths),includes:(Array.isArray(x.includes)?x.includes:[]).slice(0,30).map(y=>str(y,140)).filter(Boolean),itemKeys:(Array.isArray(x.itemKeys)?x.itemKeys:[]).map(keyOf)}));
+  const sources=(Array.isArray(d.sources)?d.sources:[]).filter(x=>x&&x.title).slice(0,6).map(x=>({title:str(x.title,120),url:/^https:\/\/[^\s"'<>]+$/.test(String(x.url||''))?String(x.url):''}));
+  return {regime:str(d.regime,80),summary:str(d.summary,600),confidence:['high','medium','low'].includes(d.confidence)?d.confidence:'medium',items,services,notes:(Array.isArray(d.notes)?d.notes:[]).slice(0,8).map(x=>str(x,300)).filter(Boolean),sources};
+}
+function lkFrame(title,body,actions){openSheet(`<div class="sh-t">${title}</div><div class="sh-s">${esc(carTitle(pendingLk.car))}</div>${body}<div class="sh-actions">${actions}</div>`)}
+async function lookupFlow(c,isNew,pasted){
+  pendingLk={car:c,isNew,pasted:pasted||null,plan:null,ctl:new AbortController()};const me=pendingLk;
+  lkFrame(pasted?'Reading your schedule':'Finding your service schedule',
+    `<div class="card" style="display:flex;gap:14px;align-items:center"><div class="spin"></div><div class="note" style="margin:0">${pasted?'Turning your handbook text into a schedule…':`Checking ${esc(c.make)}'s servicing guidance for this exact car. This can take up to a minute.`}</div></div>`,
+    `<button class="btn ghost" data-act="lk-skip">${isNew?'Skip, use a basic plan':'Cancel'}</button>`);
+  const sample=await getSample();
+  if(me!==pendingLk)return;
+  if(!sample){lkFail('The schedule lookup needs your Anthropic API key. Add it in Settings (gear icon, top right), or start with a basic plan for now.',true);return}
+  try{
+    const data=await sample.json(buildPrompt(c,pasted),{signal:me.ctl.signal,cache:pasted?false:{gcTime:864e5}});
+    if(me!==pendingLk)return;
+    const plan=cleanPlan(data);if(!plan||!plan.items.length)throw{code:'empty_plan'};
+    plan.source=pasted?'pasted':'lookup';me.plan=plan;lkPreview();
+  }catch(e){
+    if(me!==pendingLk||(e&&e.code==='cancelled'))return;
+    const code=e&&e.code;
+    lkFail(code==='not_granted'||code==='sampling_disabled'?'Your API key was rejected. Check it in Settings (gear icon).':code==='rate_limited'?'Too many requests right now. Try again in a minute.':code==='refused'?'That couldn\'t be processed. Try different details or paste from your handbook.':'The lookup didn\'t finish. Try again, or paste the schedule from your handbook.',code!=='not_granted'&&code!=='sampling_disabled');
+  }
+}
+function lkFail(msg,canRetry){
+  lkFrame('Couldn\'t get the schedule',`<div class="card note" style="margin:0">${esc(msg)}</div>`,
+    `${pendingLk.isNew?'<button class="btn ghost" data-act="lk-basic">Basic plan</button>':'<button class="btn ghost" data-act="close">Close</button>'}${canRetry?'<button class="btn ghost" data-act="paste">Paste</button><button class="btn" data-act="lk-retry">Try again</button>':''}`);
+}
+function lkPreview(){
+  const {plan,isNew}=pendingLk;
+  const svc=plan.services.map(sv=>`<div class="card" style="margin-top:8px"><div style="display:flex;justify-content:space-between;gap:8px"><b>${esc(sv.name)}</b><span class="sub" style="font-size:12px;text-align:right">${esc(everyTxt(sv.everyMiles,sv.everyMonths))}</span></div>${sv.includes.length?`<div class="note" style="margin-top:6px">${sv.includes.map(x=>'• '+esc(x)).join('<br>')}</div>`:''}</div>`).join('');
+  lkFrame('Here\'s the schedule',
+   `<div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><b>${esc(plan.regime||'Service schedule')}</b>${mfrBadge(plan)}</div>
+    ${plan.summary?`<div class="note">${esc(plan.summary)}</div>`:''}
+    ${svc?`<div class="eyebrow" style="margin-top:18px">Services and what's done</div>${svc}`:''}
+    <div class="eyebrow" style="margin-top:18px">Intervals we'll track (${plan.items.length})</div>
+    <div class="card" style="padding:4px 14px"><dl class="dl">${plan.items.map(i=>`<dt style="color:var(--text)">${esc(i.task)}</dt><dd style="color:var(--muted);font-weight:400">${esc(everyTxt(i.miles,i.months).replace('Every ',''))}</dd>`).join('')}</dl></div>
+    ${plan.notes.length?`<div class="card note" style="margin-top:8px">${plan.notes.map(n=>'• '+esc(n)).join('<br>')}</div>`:''}
+    ${plan.sources.length?`<div class="card" style="margin-top:8px"><div class="carlbl" style="margin-bottom:6px">Check against</div>${plan.sources.map(x=>x.url?`<div style="margin:4px 0"><a class="link" href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a></div>`:`<div class="note" style="margin:4px 0">${esc(x.title)}</div>`).join('')}</div>`:''}
+    <p class="note">${plan.source==='pasted'?'Built from the text you pasted.':'Based on the manufacturer\'s published guidance as Claude knows it. It is not a live connection to the manufacturer, so always check it against your handbook or service book.'} You can edit any interval later.</p>`,
+   `${isNew?'':'<button class="btn ghost" data-act="close">Cancel</button>'}<button class="btn" data-act="lk-apply">${isNew?'Use this & add car':'Use this schedule'}</button>`);
+}
+function pasteSheet(){
+  const c=pendingLk&&pendingLk.isNew?pendingLk.car:car();const isNew=!!(pendingLk&&pendingLk.isNew);
+  pendingLk={car:c,isNew};
+  lkFrame('Paste from your handbook',`<div class="note" style="margin:0 0 10px">Copy the servicing section from your handbook, service book or the manufacturer's website and paste it here. We'll turn it into your schedule.</div><div class="f"><textarea id="pastetxt" style="min-height:180px" placeholder="e.g. Oil service: every 10,000 miles or 12 months…"></textarea></div>`,
+   `<button class="btn ghost" data-act="${isNew?'lk-basic':'close'}">${isNew?'Basic plan':'Cancel'}</button><button class="btn" data-act="paste-go">Read schedule</button>`);
+}
+function applyPlan(c,plan){
+  const norm=x=>String(x||'').toLowerCase().replace(/[^a-z]/g,'');
+  const old=c.schedule||[];const used=new Set();
+  const items=plan.items.map(it=>{const m=old.find(o=>!used.has(o.id)&&((o.key&&o.key===it.key)||norm(o.task)===norm(it.task)));if(m)used.add(m.id);return{id:m?m.id:uid(),...it}});
+  old.forEach(o=>{if(!used.has(o.id)&&c.log.some(l=>(l.taskIds||[]).includes(o.id)))items.push(o)});
+  c.schedule=items;
+  const idOf=k=>(items.find(i=>i.key===k)||{}).id;
+  c.mfr={regime:plan.regime,summary:plan.summary,confidence:plan.confidence,notes:plan.notes,sources:plan.sources,source:plan.source||'basic',fetched:todayISO(),
+    services:plan.services.map(sv=>({id:uid(),name:sv.name,everyMiles:sv.everyMiles,everyMonths:sv.everyMonths,includes:sv.includes,itemIds:sv.itemKeys.map(idOf).filter(Boolean)}))};
+}
+function finishLookup(plan){
+  const {car:c,isNew}=pendingLk;pendingLk=null;
+  applyPlan(c,plan);
+  if(isNew){state.cars.push(c);state.activeId=c.id;ui.tab='garage'}
+  closeSheet();commit(c);toast(isNew?c.name+' added':'Schedule updated');
+  if(isNew)setTimeout(()=>historyHub(c,true),450);
+}
+function svcSheet(c,sv){
+  openSheet(`<div class="sh-t">${esc(sv.name)}</div><div class="sh-s">${esc(everyTxt(sv.everyMiles,sv.everyMonths))}, whichever comes first</div>
+  <div class="card note" style="margin:0">${sv.includes.map(x=>'• '+esc(x)).join('<br>')||'No checklist.'}</div>
+  <div class="sh-actions"><button class="btn ghost" data-act="close">Close</button><button class="btn" data-act="log-svc" data-id="${sv.id}">${IC.plus} Log this service</button></div>`);
+}
+function mileageSheet(c){
+  formSheet({title:'Update mileage',sub:'Last recorded: '+mi(c.mileage),fields:[{k:'miles',label:'Odometer reading',type:'number',full:1},{k:'date',label:'Date',type:'date',full:1}],values:{miles:'',date:todayISO()},save:'Update',
+    onSave:v=>{if(!has(v.miles))return'Enter the mileage';if(v.miles<c.mileage-5&&!confirmLower){confirmLower=true;return'That\'s lower than before. Tap Update again to confirm'}
+      confirmLower=false;c.mileage=v.miles;c.odo=(c.odo||[]).filter(o=>o.date!==v.date);c.odo.push({date:v.date||todayISO(),miles:v.miles});c.odo.sort((a,b)=>a.date<b.date?-1:1);if(c.odo.length>60)c.odo=c.odo.slice(-60);commit(c);toast('Mileage updated')}});
+  setTimeout(()=>$('#f_miles')?.focus(),250);
+}
+let confirmLower=false;
+function logSheet(c,entry,preTask,preSvc){
+  const isNew=!entry;const svs=(c.mfr&&c.mfr.services)||[];const sv0=preSvc&&svs.find(x=>x.id===preSvc);
+  const e=entry||{date:todayISO(),miles:c.mileage,svc:sv0?sv0.id:'',title:sv0?sv0.name:'',taskIds:sv0?[...sv0.itemIds]:preTask?[preTask]:[]};
+  const fields=[{k:'date',label:'Date done',type:'date'},{k:'miles',label:'Mileage',type:'number'},
+    ...(svs.length?[{k:'svc',label:'Service type (ticks the jobs it covers)',type:'select',full:1,options:[['','Not a scheduled service'],...svs.map(x=>[x.id,x.name])]}]:[]),
+    {k:'taskIds',label:'Jobs done (tap all that apply)',type:'checks',options:c.schedule.map(s=>[s.id,s.task])},
+    {k:'title',label:'Description',full:1,ph:'e.g. Annual service, new tyres…'},{k:'garage',label:'Garage / who did it'},{k:'cost',label:'Cost (£)',type:'number'},
+    {k:'invoice',label:'Invoice / receipt ID',full:1},{k:'work',label:'Work done / parts used',type:'textarea'},{k:'notes',label:'Notes',type:'textarea'}];
+  formSheet({title:isNew?'Log work':'Edit entry',sub:isNew?'Log real work only, with the actual date and mileage.':'',fields,values:e,save:isNew?'Save to history':'Save',
+    del:isNew?null:()=>confirmSheet('Delete entry?','This removes it from your service history.','Delete',()=>{c.log=c.log.filter(x=>x.id!==e.id);commit(c)}),
+    onSave:v=>{if(!v.date)return'Add the date';if(!v.taskIds.length&&!v.title)return'Pick a job or add a description';
+      if(isNew){c.log.push({id:uid(),...v})}else Object.assign(e,v);
+      if(has(v.miles)&&v.miles>c.mileage){c.mileage=v.miles;c.odo.push({date:v.date,miles:v.miles});c.odo.sort((a,b)=>a.date<b.date?-1:1)}
+      commit(c);toast(isNew?'Logged':'Saved')}});
+}
+function itemSheet(c,it){
+  const s=itemStatus(c,it);const hist=c.log.filter(l=>(l.taskIds||[]).includes(it.id)).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const cal=gcalLink({car:c,title:it.task,sub:'Service due',date:s.nextDate||s.estDate,est:!s.nextDate});
+  openSheet(`<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><div class="sh-t">${esc(it.task)}</div>${pill(s.state)}</div>
+  <div class="sh-s">${everyTxt(it.miles,it.months)}, whichever comes first</div>
+  <dl class="dl"><dt>Last done</dt><dd>${s.last?fmtD(s.last.date)+' · '+mi(s.last.miles):'No history'}</dd>
+  ${s.nextMiles!=null?`<dt>Next due (miles)</dt><dd>${mi(s.nextMiles)}</dd><dt>Miles remaining</dt><dd>${s.milesLeft<0?mi(-s.milesLeft)+' overdue':mi(s.milesLeft)}</dd>`:''}
+  ${s.nextDate?`<dt>Next due (date)</dt><dd>${fmtD(s.nextDate)}</dd><dt>Time remaining</dt><dd>${relDays(s.daysLeft)}</dd>`:''}
+  ${s.estDate&&!s.nextDate?`<dt>Estimated date</dt><dd>${fmtD(s.estDate)}</dd>`:''}</dl>
+  ${it.note?`<div class="card note" style="margin:0 0 12px">${esc(it.note)}</div>`:''}
+  ${hist.length?`<div class="eyebrow" style="margin-top:6px">History</div><div class="list">${hist.map(l=>`<button class="row" data-log="${l.id}"><span class="main"><div class="t">${fmtD(l.date)}</div><div class="m">${mi(l.miles)}${l.garage?' · '+esc(l.garage):''}</div></span><span class="r">${has(l.cost)?`<b>${gbp(l.cost)}</b>`:''}</span></button>`).join('')}</div>`:''}
+  <div class="sh-actions">${cal?`<a class="btn ghost" href="${esc(cal)}" target="_blank" rel="noopener" style="text-decoration:none">${IC.cal} Calendar</a>`:''}<button class="btn" data-act="log-item" data-id="${it.id}">${IC.plus} Log as done</button></div>`);
+}
+function editItemSheet(c,it){
+  const isNew=!it;const v=it||{};
+  formSheet({title:isNew?'Add service item':'Edit service item',sub:'Leave miles or months blank if it doesn\'t apply.',fields:[{k:'task',label:'Job',full:1},{k:'miles',label:'Every (miles)',type:'number'},{k:'months',label:'Every (months)',type:'number'},{k:'note',label:'Note',type:'textarea'}],values:v,
+    del:isNew?null:()=>confirmSheet('Delete '+v.task+'?','It will be removed from the plan. Past log entries stay in your history.','Delete',()=>{c.schedule=c.schedule.filter(x=>x.id!==v.id);commit(c)}),
+    onSave:o=>{if(!o.task)return'Name the job';if(isNew)c.schedule.push({id:uid(),...o});else Object.assign(v,o);commit(c)}});
+}
+function adminSheet(c,a){
+  const isNew=!a;const v=a||{};
+  formSheet({title:isNew?'Add key date':v.label,sub:'Use the real date from your documents.',fields:[{k:'label',label:'What is it',full:1,ph:'e.g. Warranty ends'},{k:'date',label:'Expiry / due date',type:'date'},{k:'cost',label:'Cost (£)',type:'number'},{k:'provider',label:'Provider',full:1},{k:'notes',label:'Notes',type:'textarea'}],values:v,
+    del:isNew?null:()=>confirmSheet('Delete '+v.label+'?','This key date will be removed.','Delete',()=>{c.admin=c.admin.filter(x=>x.id!==v.id);commit(c)}),
+    onSave:o=>{if(!o.label)return'Give it a name';if(isNew)c.admin.push({id:uid(),...o});else Object.assign(v,o);commit(c)}});
+  if(!isNew&&v.date){const r={car:c,title:v.label,sub:(v.provider||'')+' due',date:v.date};const l=gcalLink(r);
+    $('#sf').insertAdjacentHTML('afterend',`<a class="btn ghost block" style="margin-top:14px;text-decoration:none" href="${esc(l)}" target="_blank" rel="noopener">${IC.cal} Add to calendar</a>`)}
+}
+function remSheet(c,r){
+  const isNew=!r;const v=r||{};
+  const carOpts=state.cars.map(x=>[x.id,x.name]);
+  const fields=[...(isNew&&state.cars.length>1?[{k:'carId',label:'Car',type:'select',full:1,options:carOpts}]:[]),{k:'title',label:'Reminder',full:1,ph:'e.g. Rotate tyres, wax, warranty call'},{k:'date',label:'On date',type:'date'},{k:'miles',label:'Or at mileage',type:'number'},{k:'notes',label:'Notes',type:'textarea'}];
+  formSheet({title:isNew?'New reminder':'Reminder',fields,values:{carId:c.id,...v},save:isNew?'Add reminder':'Save',
+    del:isNew?null:()=>confirmSheet('Delete reminder?','"'+v.title+'" will be removed.','Delete',()=>{c.reminders=c.reminders.filter(x=>x.id!==v.id);commit(c)}),
+    onSave:o=>{if(!o.title)return'What should we remind you about?';if(!o.date&&!has(o.miles))return'Add a date or a mileage';
+      const target=o.carId?carById(o.carId):c;delete o.carId;
+      if(isNew)target.reminders.push({id:uid(),done:false,...o});else Object.assign(v,o);commit(target)}});
+  if(!isNew){
+    const extra=`<button class="btn ghost block" style="margin-top:14px" data-act="rem-done" data-id="${v.id}">Mark as done</button>`+(v.date?`<a class="btn ghost block" style="margin-top:10px;text-decoration:none" href="${esc(gcalLink({car:c,title:v.title,sub:v.notes||'',date:v.date}))}" target="_blank" rel="noopener">${IC.cal} Add to calendar</a>`:'');
+    $('#sf').insertAdjacentHTML('afterend',extra)}
+}
+function modSheet(c,m){
+  const isNew=!m;const v=m||{status:'Idea'};
+  formSheet({title:isNew?'Add part':v.name,fields:[{k:'name',label:'Part / modification',full:1},{k:'purpose',label:'Purpose'},{k:'status',label:'Status',type:'select',options:MOD_STATUSES},{k:'budget',label:'Planned budget (£)',type:'number'},{k:'spent',label:'Actual spent (£)',type:'number'},{k:'fitDate',label:'Fit date',type:'date'},{k:'fitMiles',label:'Mileage at fit',type:'number'},{k:'seller',label:'Seller / installer'},{k:'insurerTold',label:'Insurer told?',type:'bool'},{k:'notes',label:'Notes / part number',type:'textarea'}],values:v,
+    del:isNew?null:()=>confirmSheet('Delete '+v.name+'?','It will be removed from your build list.','Delete',()=>{c.mods=c.mods.filter(x=>x.id!==v.id);commit(c)}),
+    onSave:o=>{if(!o.name)return'Name the part';if(o.status==='Fitted'&&!o.fitDate)o.fitDate=todayISO();if(isNew)c.mods.push({id:uid(),...o});else Object.assign(v,o);commit(c)}});
+}
+function financeSheet(c){formSheet({title:'Finance',fields:[{k:'monthly',label:'Monthly payment (£)',type:'number'},{k:'balloon',label:'Balloon / final payment (£)',type:'number'},{k:'provider',label:'Provider',full:1}],values:c.finance,onSave:o=>{c.finance=o;commit(c)}})}
+function notesSheet(c){formSheet({title:'Notes',fields:[{k:'notes',label:'Notes',type:'textarea'}],values:c,onSave:o=>{c.notes=o.notes;commit(c)}})}
+function thresholdsSheet(){formSheet({title:'Due soon threshold',sub:'Items turn amber when they are this close.',fields:[{k:'soonMiles',label:'Miles before',type:'number'},{k:'soonDays',label:'Days before',type:'number'}],values:state.settings,onSave:o=>{state.settings={soonMiles:o.soonMiles??1000,soonDays:o.soonDays??30};commit(null)}})}
+
+async function exportBackup(){
+  const data=JSON.stringify({app:'The Owners Hub',version:1,exported:new Date().toISOString(),cars:state.cars,settings:state.settings},null,2);
+  if(window.ohDesktop){try{const r=await window.ohDesktop.saveFile('owners-hub-backup-'+todayISO()+'.json',data);if(r&&r.saved)toast('Backup saved');return}catch(e){}}
+  try{await navigator.clipboard.writeText(data);toast('Backup copied to clipboard')}catch(e){toast('Export isn\'t available here')}
+}
+function importBackup(file){
+  const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.cars))throw 0;
+    confirmSheet('Restore backup?',`This adds ${d.cars.length} car(s) from the backup. Cars with the same ID are replaced.`,'Restore',()=>{
+      d.cars.forEach(x=>{normalize(x);const i=state.cars.findIndex(y=>y.id===x.id);if(i>=0)state.cars[i]=x;else state.cars.push(x);dirty.add('car-'+x.id)});
+      if(d.settings)state.settings=d.settings;state.activeId=d.cars[0]?.id||state.activeId;commit(null);toast('Restored')})}
+    catch(e){toast('That file isn\'t an Owners Hub backup')}};r.readAsText(file);
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button,[data-act]');if(!t)return;
+  if(t.closest('#sheet')&&t.matches('a'))return;
+  const c=car();const d=t.dataset;
+  if(d.tab){ui.tab=d.tab;try{history.replaceState(null,'','#'+d.tab)}catch(_){}render();window.scrollTo(0,0);return}
+  if(d.car){state.activeId=d.car;commit(null);return}
+  if(d.goto){state.activeId=d.carid;ui.tab=d.goto;ui.serviceView='schedule';try{history.replaceState(null,'','#'+d.goto)}catch(_){}commit(null);window.scrollTo(0,0);return}
+  if(d.sv){ui.serviceView=d.sv;render();return}
+  if(d.rf){ui.remFilter=d.rf;render();return}
+  if(d.item){itemSheet(c,c.schedule.find(x=>x.id===d.item));return}
+  if(d.svc){const sv=c.mfr&&c.mfr.services.find(x=>x.id===d.svc);if(sv)svcSheet(c,sv);return}
+  if(d.edititem){editItemSheet(c,c.schedule.find(x=>x.id===d.edititem));return}
+  if(d.log){const l=c.log.find(x=>x.id===d.log);if(l)logSheet(c,l);return}
+  if(d.mod){modSheet(c,c.mods.find(x=>x.id===d.mod));return}
+  if(d.admin){adminSheet(c,c.admin.find(x=>x.id===d.admin));return}
+  if(d.rem){const [k,id]=d.rem.split(':');const rc=carById(d.carid);if(!rc)return;
+    if(k==='service'){if(rc.id!==state.activeId){state.activeId=rc.id;commit(null)}itemSheet(rc,rc.schedule.find(x=>x.id===id))}
+    else if(k==='admin')adminSheet(rc,rc.admin.find(x=>x.id===id));
+    else remSheet(rc,rc.reminders.find(x=>x.id===id));return}
+  switch(d.act){
+    case 'add-car':addCarSheet();break;
+    case 'cf-save':cfSave();break;
+    case 'cf-unlock':if(cf){cf.unlocked[d.k]=true;renderCF()}break;
+    case 'cf-retry':if(cf){try{localStorage.removeItem('oh-var:'+[cf.v.make,cf.v.model,cf.v.year].join('|').toLowerCase())}catch(_){}loadVariants()}break;
+    case 'cf-list':if(cf){cf.variantOther=false;cf.v.variant='';renderCF()}break;
+    case 'history':{const hc=hx?hx.car:c;if(hx&&hx.ctl)hx.ctl.abort();const rows=hx&&hx.rows;historyHub(hc);if(rows)hx.rows=rows;break}
+    case 'hist-scan':histScanSheet();break;
+    case 'hist-paste':histPasteSheet();break;
+    case 'hist-manual':histManual();break;
+    case 'hist-read-img':{const f=$('#hx-files');if(!f||!f.files.length){toast('Choose at least one photo');break}const max=(hx.lim&&hx.lim.maxCount)||5;histExtract({images:[...f.files].slice(0,max)});break}
+    case 'hist-read-text':{const t=(($('#hx-text')||{}).value||'').trim();if(t.length<20){toast('Paste a bit more of the record');break}histExtract({text:t});break}
+    case 'hist-save':histSaveEntries(hx.entries.filter(e=>e.keep));break;
+    case 'hm-add':hmRead();hx.rows.push({});histManual();setTimeout(()=>{const cs=document.querySelectorAll('#hm .hm');cs[cs.length-1]&&cs[cs.length-1].scrollIntoView({behavior:'smooth',block:'center'})},50);break;
+    case 'hm-del':hmRead();hx.rows.splice(+d.i,1);histManual();break;
+    case 'hm-save':hmSave();break;
+    case 'lookup':closeSheet();lookupFlow(c,false);break;
+    case 'paste':pasteSheet();break;
+    case 'paste-go':{const t=($('#pastetxt')||{}).value||'';if(t.trim().length<30){toast('Paste a bit more of the schedule');break}lookupFlow(pendingLk.car,pendingLk.isNew,t.trim());break}
+    case 'lk-retry':lookupFlow(pendingLk.car,pendingLk.isNew,pendingLk.pasted);break;
+    case 'lk-skip':if(pendingLk&&pendingLk.isNew){pendingLk.ctl&&pendingLk.ctl.abort();const p=basicPlan(pendingLk.car);p.source='basic';finishLookup(p)}else closeSheet();break;
+    case 'lk-basic':{const p=basicPlan(pendingLk.car);p.source='basic';finishLookup(p);break}
+    case 'lk-apply':if(pendingLk&&pendingLk.plan)finishLookup(pendingLk.plan);break;
+    case 'log-svc':{const id=d.id;closeSheet();setTimeout(()=>logSheet(c,null,null,id),200);break}
+    case 'edit-car':editCarSheet(c);break;
+    case 'mileage':mileageSheet(c);break;
+    case 'log':logSheet(c);break;
+    case 'log-item':{const id=d.id;closeSheet();setTimeout(()=>logSheet(c,null,id),200);break}
+    case 'add-item':editItemSheet(c);break;
+    case 'add-admin':adminSheet(c);break;
+    case 'add-rem':if(!state.cars.length){toast('Add a car first');break}remSheet(c);break;
+    case 'rem-done':{const rc=state.cars.find(x=>x.reminders.some(r=>r.id===d.id));const r=rc&&rc.reminders.find(x=>x.id===d.id);if(r){r.done=true;commit(rc);closeSheet();toast('Done')}break}
+    case 'add-mod':modSheet(c);break;
+    case 'finance':financeSheet(c);break;
+    case 'edit-notes':notesSheet(c);break;
+    case 'thresholds':thresholdsSheet();break;
+    case 'plan-toggle':ui.fullPlan=!ui.fullPlan;render();break;
+    case 'export':exportBackup();break;
+    case 'settings':settingsSheet();break;
+    case 'update-open':if(upd.state==='ready')window.ohDesktop.update.install();else updSheet();break;
+    case 'update-check':upd={state:'checking'};drawUpd();window.ohDesktop.update.check();break;
+    case 'update-download':window.ohDesktop.update.download();break;
+    case 'update-install':window.ohDesktop.update.install();break;
+    case 'key-save':{const v=(($('#apikey')||{}).value||'').trim();if(!v){toast('Paste your API key');break}if(!/^sk-ant-/.test(v)){toast('That doesn\'t look like an Anthropic key (sk-ant-…)');break}
+      window.ohDesktop.setKey(v).then(r=>{if(r&&r.ok){closeSheet();toast('API key saved')}else toast('Couldn\'t save the key')});break}
+    case 'key-del':window.ohDesktop.setKey('').then(()=>{closeSheet();toast('API key removed')});break;
+    case 'del-car':confirmSheet('Remove '+c.name+'?','This deletes the car and all its history, mods and reminders. Export a backup first if you might want it back.','Remove',()=>{
+      state.cars=state.cars.filter(x=>x.id!==c.id);dirty.add('car-'+c.id);state.activeId=state.cars[0]?.id||null;ui.tab='garage';commit(null);toast('Removed')});break;
+    case 'close':closeSheet();break;
+    case 'sh-save':sheetSubmit&&sheetSubmit();break;
+    case 'sh-del':sheetDel&&sheetDel();break;
+  }
+});
+document.addEventListener('submit',e=>{e.preventDefault();sheetSubmit&&sheetSubmit()});
+document.addEventListener('change',e=>{
+  if(cf&&e.target.closest('#cf')&&e.target.dataset.k){cfChange(e.target);return}
+  if(e.target.dataset.hx!=null&&hx&&hx.entries){hx.entries[+e.target.dataset.hx].keep=e.target.checked;histReview();return}
+  if(e.target.id==='hx-files'){const n=e.target.files.length,max=(hx&&hx.lim&&hx.lim.maxCount)||5;$('#hx-count').innerHTML=`${IC.cam}<b>${n} photo${n===1?'':'s'} selected</b><span class="sub">${n>max?'Only the first '+max+' will be read':'Tap to change'}</span>`;return}
+  if(e.target.id==='importf'&&e.target.files[0])importBackup(e.target.files[0]);
+  if(e.target.id==='f_svc'){const c=car();const sv=c&&c.mfr&&c.mfr.services.find(x=>x.id===e.target.value);if(!sv)return;
+    document.querySelectorAll('#f_taskIds input').forEach(i=>{i.checked=sv.itemIds.includes(i.value)});const t=$('#f_title');if(t&&!t.value)t.value=sv.name}});
+$('#scrim').addEventListener('click',closeSheet);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
+window.addEventListener('scroll',()=>$('#top').classList.toggle('scrolled',scrollY>4),{passive:true});
+function fromHash(){const h=location.hash.slice(1);if(TABS.some(t=>t[0]===h))ui.tab=h}
+window.addEventListener('hashchange',()=>{fromHash();render()});
+fromHash();render();setSync();initStore();setTimeout(dailyNotify,1500);initUpdates();
+</script>
+</body>
+</html>
