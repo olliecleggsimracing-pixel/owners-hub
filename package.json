@@ -1,7 +1,7 @@
 {
   "name": "owners-hub",
   "productName": "The Owners Hub",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Your garage, kept. Service schedules, history, MOT and reminders for all your cars.",
   "author": "The Owners Hub",
   "main": "main.js",
