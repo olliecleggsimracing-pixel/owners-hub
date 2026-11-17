@@ -39,6 +39,14 @@ jobs:
         run: |
           npm pkg set "repository=github:${{ github.repository }}"
           npm pkg set build.publish.provider=github build.publish.releaseType=release
+      - name: Tag this version
+        if: steps.ver.outputs.new == 'true'
+        shell: bash
+        run: |
+          V="v${{ steps.ver.outputs.version }}"
+          if ! git ls-remote --exit-code --tags origin "refs/tags/$V" >/dev/null; then
+            git tag "$V" && git push origin "$V"
+          fi
       - if: steps.ver.outputs.new == 'true'
         run: npm install
       - name: Build installer and publish release
